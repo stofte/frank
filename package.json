@@ -1,0 +1,11 @@
+{
+  "name": "frank",
+  "version": "0.1.0",
+  "description": "",
+  "scripts": {
+    "start": "electron main.js"
+  },
+  "dependencies": {
+    "electron-prebuilt": "^0.37.6"
+  }
+}
