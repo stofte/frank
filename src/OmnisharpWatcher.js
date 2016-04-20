@@ -2,21 +2,21 @@ let child_process = require('child_process');
 let remote = require('electron').remote;
 import ajax from './ajax';
 
-// todo teardown when quitting
 export default class OmnisharpWatcher {
 
-    omnisharpProcess = null;
+    process = null;
+    port = 2000;
     started = false;
 
     constructor() { 
-        console.log(remote);
         // todo find some nice way
         window.onbeforeunload = this.closing.bind(this);
     }
 
     start() {
-        let cmd = __dirname + '/omnisharp/Omnisharp.exe -s C:\\Projects\\ConsoleApp1\\ConsoleApp1.sln';
-        this.omnisharpProcess = child_process.exec(cmd, (error, stdout, stderr) => {
+        let slnPath = 'C:/Projects/ConsoleApp1/ConsoleApp1.sln';
+        let cmd = `${__dirname}/omnisharp/Omnisharp.exe -s ${slnPath} -p ${this.port}`;
+        this.process = child_process.exec(cmd, (error, stdout, stderr) => {
             console.log('returned');
             console.log(`stdout: ${stdout}`);
             console.log(`stderr: ${stderr}`);            
@@ -24,8 +24,7 @@ export default class OmnisharpWatcher {
                 console.log(`exec error: ${error}`);
             }
         });
-        this.started = true; // todo check property or something
-        console.log(this.omnisharpProcess);
+        this.started = this.process && this.process.stdio;
     }
 
     closing(event) {
@@ -35,7 +34,7 @@ export default class OmnisharpWatcher {
             }
         }, 100);
         // todo use omnisharp-node-client
-        ajax('http://localhost:2000/stopserver').then(() => {
+        ajax(`http://localhost:${this.port}/stopserver`).then(() => {
             this.started = false;
         });
         return !this.started;
