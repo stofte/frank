@@ -1,26 +1,35 @@
-export class Welcome {
-  heading = 'Welcome to Aurelia!';
-  firstName = 'John';
-  lastName = 'Doe';
+import 'codemirror/lib/codemirror.css!';
+import CodeMirror from 'codemirror';
 
-  get fullName() {
-    return `${this.firstName} ${this.lastName}`;
-  }
+export class App {
+    heading = 'Welcome to Aurelia!';
+    firstName = 'John';
+    lastName = 'Doe';
+    mirror = null;
 
-  submit() {
-    alert(`Welcome, ${this.fullName}!`);
-  }
+    get fullName() {
+        return `${this.firstName} ${this.lastName}`;
+    }
 
-  get electronVersion() {
-    return process.versions.electron;
-  }
+    submit() {
+        alert(`Welcome, ${this.fullName}!`);
+    }
 
-  get chromeVersion() {
-    return process.versions.chrome;
-  }
+    attached() {
+        this.mirror = CodeMirror.fromTextArea(this.editorElement, {
+            lineNumbers: true
+        });
+    }
 
-  get nodeVersion() {
-    return process.versions.node;
-  }
+    get electronVersion() {
+        return process.versions.electron;
+    }
 
+    get chromeVersion() {
+        return process.versions.chrome;
+    }
+
+    get nodeVersion() {
+        return process.versions.node;
+    }
 }
