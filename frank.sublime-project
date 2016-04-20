@@ -1,0 +1,17 @@
+{
+	"settings": {
+		"translate_tabs_to_spaces": true,
+		"tab_size": 4
+	},
+	"folders": [
+		{
+			"path": "shell",
+			"file_include_patterns": ["*.js", "*.html"],
+		},
+		{
+			"path": ".",
+			"file_include_patterns": ["*.sublime-project", "*.json"],
+			"name": "config"
+		}
+	]
+}

@@ -2,10 +2,14 @@
   "name": "frank",
   "version": "0.1.0",
   "description": "",
-  "scripts": {
-    "start": "electron main.js"
+  "devDependencies": {
+    "jspm": "^0.16.33"
   },
-  "dependencies": {
-    "electron-prebuilt": "^0.37.6"
+  "jspm": {
+    "devDependencies": {
+      "babel": "npm:babel-core@^5.8.24",
+      "babel-runtime": "npm:babel-runtime@^5.8.24",
+      "core-js": "npm:core-js@^1.1.4"
+    }
   }
 }
