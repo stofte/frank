@@ -1,19 +1,12 @@
 import 'codemirror/lib/codemirror.css!';
 import CodeMirror from 'codemirror';
+import OmnisharpWatcher from './OmnisharpWatcher';
+
+let watcher = new OmnisharpWatcher();
+watcher.start();
 
 export class App {
-    heading = 'Welcome to Aurelia!';
-    firstName = 'John';
-    lastName = 'Doe';
     mirror = null;
-
-    get fullName() {
-        return `${this.firstName} ${this.lastName}`;
-    }
-
-    submit() {
-        alert(`Welcome, ${this.fullName}!`);
-    }
 
     attached() {
         this.mirror = CodeMirror.fromTextArea(this.editorElement, {
