@@ -1,5 +1,6 @@
 let child_process = require('child_process');
 let remote = require('electron').remote;
+import ajax from './ajax';
 
 // todo teardown when quitting
 export default class OmnisharpWatcher {
@@ -9,7 +10,7 @@ export default class OmnisharpWatcher {
 
     constructor() { 
         console.log(remote);
-        // todo use electron ipc instead or do some stuff from main process?
+        // todo find some nice way
         window.onbeforeunload = this.closing.bind(this);
     }
 
@@ -28,10 +29,15 @@ export default class OmnisharpWatcher {
     }
 
     closing(event) {
-        setTimeout(() => {
+        setInterval(() => {
+            if (!this.started) {
+                remote.getCurrentWindow().close();
+            }
+        }, 100);
+        // todo use omnisharp-node-client
+        ajax('http://localhost:2000/stopserver').then(() => {
             this.started = false;
-            remote.getCurrentWindow().close();
-        }, 3000);
+        });
         return !this.started;
     }
 }
