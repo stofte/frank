@@ -9,9 +9,10 @@
 			"file_include_patterns": ["*.js", "*.html"],
 		},
 		{
+			"name": "config",
 			"path": ".",
-			"file_include_patterns": ["*.sublime-project", "*.json"],
-			"name": "config"
+			"file_include_patterns": ["*.sublime-project", "*.json", "*.js"],
+			"folder_exclude_patterns": ["node_modules", "jspm_packages", "shell"]
 		}
 	]
 }
