@@ -5,14 +5,14 @@
 	},
 	"folders": [
 		{
-			"path": "src",
+			"path": "shell",
 			"file_include_patterns": ["*.js", "*.html"],
 		},
 		{
 			"name": "config",
 			"path": ".",
 			"file_include_patterns": ["*.sublime-project", "*.json", "*.js", "index.html", ".gitignore"],
-			"folder_exclude_patterns": ["node_modules", "jspm_packages", "src", "omnisharp", "server", "artifacts"]
+			"folder_exclude_patterns": ["node_modules", "jspm_packages", "shell", "omnisharp", "server", "artifacts"]
 		}
 	]
 }

@@ -1,6 +1,6 @@
 import {inject} from 'aurelia-framework';
 import CodeMirror from 'codemirror';
-import OmnisharpWatcher from './OmnisharpWatcher';
+import OmnisharpWatcher from './module/OmnisharpWatcher';
 
 import 'codemirror/lib/codemirror.css!';
 import 'normalize.css/normalize.css!';
