@@ -31,6 +31,7 @@ System.config({
     "codemirror": "npm:codemirror@5.14.0",
     "core-js": "npm:core-js@1.2.6",
     "css": "github:systemjs/plugin-css@0.1.21",
+    "normalize.css": "npm:normalize.css@4.1.1",
     "github:jspm/nodelibs-assert@0.1.0": {
       "assert": "npm:assert@1.3.0"
     },

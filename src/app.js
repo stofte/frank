@@ -1,12 +1,19 @@
-import 'codemirror/lib/codemirror.css!';
+import {inject} from 'aurelia-framework';
 import CodeMirror from 'codemirror';
 import OmnisharpWatcher from './OmnisharpWatcher';
 
-let watcher = new OmnisharpWatcher();
-watcher.start();
+import 'codemirror/lib/codemirror.css!';
+import 'normalize.css/normalize.css!';
 
+@inject(OmnisharpWatcher)
 export class App {
     mirror = null;
+    omnisharp = null;
+
+    constructor(omnisharp) {
+        this.omnisharp = omnisharp;
+        this.omnisharp.start();
+    }
 
     attached() {
         this.mirror = CodeMirror.fromTextArea(this.editorElement, {
