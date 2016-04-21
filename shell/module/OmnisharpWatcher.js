@@ -1,5 +1,6 @@
 import {inject} from 'aurelia-framework';
 import {HttpClient} from 'aurelia-fetch-client';
+import config from '../config';
 
 const child_process = require('child_process');
 const ipc = require('electron').ipcRenderer;
@@ -7,7 +8,7 @@ const ipc = require('electron').ipcRenderer;
 @inject(HttpClient)
 export default class OmnisharpWatcher {
     process = null;
-    port = 2000;
+    port = config.omnisharpPort;
     started = false;
     http = null;
 
