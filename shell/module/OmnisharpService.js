@@ -6,7 +6,7 @@ const child_process = require('child_process');
 const ipc = require('electron').ipcRenderer;
 
 @inject(HttpClient)
-export default class OmnisharpWatcher {
+export default class OmnisharpService {
     process = null;
     port = config.omnisharpPort;
     started = false;
@@ -29,7 +29,7 @@ export default class OmnisharpWatcher {
         this.http.fetch(this.action('checkreadystatus'))
             .then(() => console.log('omnisharp already running'))
             .catch(() => {
-                let slnPath = 'C:/Projects/ConsoleApp1/ConsoleApp1.sln';
+                let slnPath = 'C:/src/frank/server';
                 let cmd = `${__dirname}/omnisharp/Omnisharp.exe -s ${slnPath} -p ${this.port}`;
                 this.process = child_process.exec(cmd, (error, stdout, stderr) => {
                     console.log('returned');

@@ -1,11 +1,12 @@
 import {inject} from 'aurelia-framework';
 import CodeMirror from 'codemirror';
-import OmnisharpWatcher from './module/OmnisharpWatcher';
+import OmnisharpService from './module/OmnisharpService';
 
 import 'codemirror/lib/codemirror.css!';
 import 'normalize.css/normalize.css!';
+import './style/basic.css!';
 
-@inject(OmnisharpWatcher)
+@inject(OmnisharpService)
 export class App {
     mirror = null;
     omnisharp = null;
