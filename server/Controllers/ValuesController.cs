@@ -8,6 +8,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using System.Reflection;
 using System.IO;
 using System.Runtime.Loader;
+using Microsoft.CodeAnalysis.Emit;
 
 namespace server.Controllers
 {
@@ -18,17 +19,23 @@ namespace server.Controllers
         [HttpGet]
         public IEnumerable<string> Get()
         {
-            var s = LanguageVersion.CSharp1.ToString();
-            
+            var references = new MetadataReference[]
+            {
+                MetadataReference.CreateFromFile(typeof(ISet<>).GetTypeInfo().Assembly.Location),
+                MetadataReference.CreateFromFile(typeof(Enumerable).GetTypeInfo().Assembly.Location),
+                MetadataReference.CreateFromFile(typeof(Object).GetTypeInfo().Assembly.Location),
+            };
+
             var compilerOptions = new CSharpCompilationOptions(outputKind: OutputKind.DynamicallyLinkedLibrary);
-            //var tree = CSharpSyntaxTree.ParseText(_source);
-            //var compilation = CSharpCompilation.Create("test")
-            //    .WithOptions(compilerOptions)
-            //    .AddSyntaxTrees(new SyntaxTree[] { tree });
-            //var stream = new MemoryStream();
-            var an = new AssemblyName();
+            var tree = CSharpSyntaxTree.ParseText(_source);
+            var compilation = CSharpCompilation.Create("test")
+                .WithOptions(compilerOptions)
+                .WithReferences(references)
+                .AddSyntaxTrees(new SyntaxTree[] { tree });
+            var stream = new MemoryStream();
+            var compilationResult = compilation.Emit(stream, options: new EmitOptions());
             
-            return new string[] { s, Accessibility.Friend.ToString() };
+            return new string[] { LanguageVersion.CSharp1.ToString(), Accessibility.Friend.ToString() };
         }
 
         // GET api/values/5
@@ -69,20 +76,10 @@ namespace ConsoleApp1
     {
         public string Run(string[] args)
         {
-
-            return ""hello""
+            return ""Hello world"";
         }
     }
 }
 ";
-    }
-
-    public class MyAssemblyLoadContext : AssemblyLoadContext
-    {
-        protected override Assembly Load(AssemblyName assemblyName)
-        {
-            
-            return null; // base.LoadFromAssemblyPath("C:\\Github\\DefALC\\1\\" + assemblyName.Name + ".dll");
-        }
     }
 }
