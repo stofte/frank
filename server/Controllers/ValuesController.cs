@@ -20,7 +20,7 @@ namespace server.Controllers
         [HttpGet]
         public IEnumerable<string> Get()
         {
-            var assemblyName = "test";
+            var assemblyName = Guid.NewGuid().ToIdentifierWithPrefix("a");
             var references = new MetadataReference[]
             {
                 MetadataReference.CreateFromFile(typeof(ISet<>).GetTypeInfo().Assembly.Location),
@@ -44,7 +44,7 @@ namespace server.Controllers
             var instance = Activator.CreateInstance(programType);
             var method = programType.GetMethod("Run");
             var result = method.Invoke(instance, new object[] { }) as string;
-           
+            
             return new string[] { result };
         }
 

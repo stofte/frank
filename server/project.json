@@ -18,7 +18,14 @@
     "Microsoft.Extensions.Logging.Debug": "1.0.0-rc1-final",
     "Microsoft.CodeAnalysis": "1.1.0-rc1-20151109-01",
     "System.Runtime.Loader": "4.0.0-beta-23516",
-    "System.Reflection": "4.1.0-beta-23516"
+    "System.Reflection": "4.1.0-beta-23516",
+    "EntityFramework.Commands": "7.0.0-rc1-final",
+    "EntityFramework.Core": "7.0.0-rc1-final",
+    "EntityFramework.MicrosoftSqlServer": "7.0.0-rc1-final",
+    "EntityFramework.MicrosoftSqlServer.Design": "7.0.0-rc1-final",
+    "EntityFramework.Relational": "7.0.0-rc1-final",
+    "EntityFramework.Relational.Design": "7.0.0-rc1-final",
+    "EntityFramework.Sqlite": "7.0.0-rc1-final"
   },
 
   "commands": {
