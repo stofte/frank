@@ -12,11 +12,11 @@ namespace server
     {
         public static Lazy<LibraryLoader> Instance = new Lazy<LibraryLoader>(() => new LibraryLoader());
 
-        public string AssemblyPath;
+        public Stream AssemblyStream;
         
         protected override Assembly Load(AssemblyName assemblyName)
         {
-            return base.LoadFromAssemblyPath(AssemblyPath);
+            return base.LoadFromStream(AssemblyStream);
         }
     }
 }
