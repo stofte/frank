@@ -7,11 +7,15 @@ using Microsoft.AspNet.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using System.Reflection;
+using System.Runtime.Loader;
 
 namespace server
 {
     public class Startup
     {
+        public static LibraryLoader Loader;
+
         public Startup(IHostingEnvironment env)
         {
             // Set up configuration sources.
@@ -44,6 +48,11 @@ namespace server
         }
 
         // Entry point for the application.
-        public static void Main(string[] args) => Microsoft.AspNet.Hosting.WebApplication.Run<Startup>(args);
+        public static void Main(string[] args)
+        {
+            AssemblyLoadContext.InitializeDefaultContext(LibraryLoader.Instance.Value);
+            
+            Microsoft.AspNet.Hosting.WebApplication.Run<Startup>(args);
+        }
     }
 }

@@ -9,6 +9,7 @@ using System.Reflection;
 using System.IO;
 using System.Runtime.Loader;
 using Microsoft.CodeAnalysis.Emit;
+using System.Threading;
 
 namespace server.Controllers
 {
@@ -19,6 +20,13 @@ namespace server.Controllers
         [HttpGet]
         public IEnumerable<string> Get()
         {
+            var fileName = @"C:\test.dll";
+            var assemblyName = "test";
+            if (System.IO.File.Exists(fileName))
+            {
+                System.IO.File.Delete(fileName);
+            }
+            
             var references = new MetadataReference[]
             {
                 MetadataReference.CreateFromFile(typeof(ISet<>).GetTypeInfo().Assembly.Location),
@@ -28,14 +36,23 @@ namespace server.Controllers
 
             var compilerOptions = new CSharpCompilationOptions(outputKind: OutputKind.DynamicallyLinkedLibrary);
             var tree = CSharpSyntaxTree.ParseText(_source);
-            var compilation = CSharpCompilation.Create("test")
+            var compilation = CSharpCompilation.Create(assemblyName)
                 .WithOptions(compilerOptions)
                 .WithReferences(references)
                 .AddSyntaxTrees(new SyntaxTree[] { tree });
             var stream = new MemoryStream();
-            var compilationResult = compilation.Emit(stream, options: new EmitOptions());
-            
-            return new string[] { LanguageVersion.CSharp1.ToString(), Accessibility.Friend.ToString() };
+            using (var fs = new FileStream(fileName, FileMode.Create))
+            {
+                var compilationResult = compilation.Emit(fs, options: new EmitOptions());
+            }
+            LibraryLoader.Instance.Value.AssemblyPath = fileName;
+            var asm = LibraryLoader.Instance.Value.LoadFromAssemblyName(new AssemblyName(assemblyName));
+            var programType = asm.GetTypes().First();
+            var instance = Activator.CreateInstance(programType);
+            var method = programType.GetMethod("Run");
+            var result = method.Invoke(instance, new object[] { }) as string;
+           
+            return new string[] { result };
         }
 
         // GET api/values/5
@@ -74,7 +91,7 @@ namespace ConsoleApp1
 {
     public class Program
     {
-        public string Run(string[] args)
+        public string Run()
         {
             return ""Hello world"";
         }

@@ -10,16 +10,13 @@ namespace server
 {
     public class LibraryLoader : AssemblyLoadContext
     {
-        Stream _assembly;
+        public static Lazy<LibraryLoader> Instance = new Lazy<LibraryLoader>(() => new LibraryLoader());
 
-        public LibraryLoader(Stream assm)
-        {
-            _assembly = assm;
-        }
-
+        public string AssemblyPath;
+        
         protected override Assembly Load(AssemblyName assemblyName)
         {
-            return base.LoadFromStream(_assembly);
+            return base.LoadFromAssemblyPath(AssemblyPath);
         }
     }
 }
