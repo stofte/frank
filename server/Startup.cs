@@ -51,7 +51,6 @@ namespace server
         public static void Main(string[] args)
         {
             AssemblyLoadContext.InitializeDefaultContext(LibraryLoader.Instance.Value);
-            
             Microsoft.AspNet.Hosting.WebApplication.Run<Startup>(args);
         }
     }
