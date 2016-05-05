@@ -5,7 +5,7 @@ namespace QueryEngine
     using System.Runtime.Serialization.Json;
     using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.Logging;
-    using QueryEngine.Service;
+    using QueryEngine.Services;
 
     public class RequestHandler
     {
@@ -22,14 +22,14 @@ namespace QueryEngine
         {
             if (context.Request.Path.HasValue)
             {
-                var res = _service.ExecuteQuery(new Model.QueryInput
+                var res = _service.ExecuteQuery(new Models.QueryInput
                 {
                     ConnectionString = @"Data Source=.\sqlexpress;Integrated Security=True;Initial Catalog=eftest",
                     Source = "eftable.First().MyValue",
                 });
-                var js = new DataContractJsonSerializer(typeof(Model.QueryResult));
+                var js = new DataContractJsonSerializer(typeof(Models.QueryResult));
                 context.Response.Headers.Add("content-type", new [] { "application/json; charset=utf-8" });
-                js.WriteObject(context.Response.Body, new Model.QueryResult { Value = res });
+                js.WriteObject(context.Response.Body, new Models.QueryResult { Value = res });
                 return;
             }
             await _next(context);

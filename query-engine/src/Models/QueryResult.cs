@@ -1,4 +1,4 @@
-namespace QueryEngine.Model
+namespace QueryEngine.Models
 {
     using System.Runtime.Serialization;
 

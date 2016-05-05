@@ -1,8 +1,8 @@
-namespace QueryEngine.Service
+namespace QueryEngine.Services
 {
     using System;
     using System.Reflection;
-    using QueryEngine.Model;
+    using QueryEngine.Models;
 
     public class QueryService
     {

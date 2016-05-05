@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace QueryEngine
+﻿namespace QueryEngine
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+
     public static class GuidHelper
     {
         public static string ToIdentifierWithPrefix(this Guid guid, string prefix)

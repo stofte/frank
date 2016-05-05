@@ -3,15 +3,15 @@ namespace QueryEngine
     using Microsoft.AspNetCore.Builder;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
-    using QueryEngine.Service;
+    using QueryEngine.Services;
+    using QueryEngine.Handlers;
 
     public class Startup
     {
         public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
         {
-            loggerFactory.AddConsole();
-            app
-                .UseMiddleware<RequestHandler>();
+            loggerFactory.AddConsole(LogLevel.Debug);
+            app.UseMiddleware<StatusHandler>();
         }
 
         public void ConfigureServices(IServiceCollection services)
