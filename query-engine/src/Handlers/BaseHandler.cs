@@ -2,6 +2,7 @@ namespace QueryEngine.Handlers
 {
     using System;
     using System.Diagnostics;
+    using System.Threading;
     using System.Threading.Tasks;
     using System.Runtime.Serialization.Json;
     using Microsoft.AspNetCore.Http;
@@ -28,10 +29,18 @@ namespace QueryEngine.Handlers
                     input = (TInput) inputSerializer.ReadObject(context.Request.Body);
                 }
                 var res = Execute(input);
-                var js = new DataContractJsonSerializer(typeof(TResult));
-                context.Response.Headers.Add("Content-Type", new [] { "application/json; charset=utf-8" });
                 context.Response.Headers.Add("X-Duration-Milliseconds", Math.Ceiling(sw.Elapsed.TotalMilliseconds).ToString());
-                js.WriteObject(context.Response.Body, res);
+                if (typeof(TResult) == typeof(string))
+                {
+                    context.Response.Headers.Add("Content-Type", "text/plain; charset=utf-8");
+                    await context.Response.WriteAsync(res as string);
+                } 
+                else 
+                {
+                    context.Response.Headers.Add("Content-Type", "application/json; charset=utf-8");
+                    var js = new DataContractJsonSerializer(typeof(TResult));
+                    js.WriteObject(context.Response.Body, res);
+                }
                 return;
             }
             await _next(context);

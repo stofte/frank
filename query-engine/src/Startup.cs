@@ -13,6 +13,7 @@ namespace QueryEngine
             loggerFactory.AddConsole(LogLevel.Debug);
             app.UseMiddleware<StatusHandler>();
             app.UseMiddleware<QueryHandler>();
+            app.UseMiddleware<DebugHandler>();
         }
 
         public void ConfigureServices(IServiceCollection services)
@@ -21,6 +22,7 @@ namespace QueryEngine
             var compiler = new CompileService(schemaService);
             var queryService = new QueryService(compiler);
             services.AddSingleton<QueryService>(queryService);
+            services.AddSingleton<SchemaService>(schemaService);
         }
     }
 }

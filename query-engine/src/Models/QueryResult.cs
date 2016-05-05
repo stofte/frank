@@ -6,6 +6,6 @@ namespace QueryEngine.Models
     public class QueryResult 
     {
         [DataMember]
-        public string Value { get; set; }
+        public object Value { get; set; }
     }
 }
