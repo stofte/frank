@@ -10,11 +10,13 @@ namespace QueryEngine.Handlers
 
     public class DebugHandler : BaseHandler<string, QueryInput>
     {
-        SchemaService _service;
+        SchemaService _schemaService;
+        CompileService _compileService;
 
-        public DebugHandler(RequestDelegate next, SchemaService service) : base(next) 
+        public DebugHandler(RequestDelegate next, SchemaService service, CompileService compileService) : base(next) 
         {
-            _service = service;
+            _schemaService = service;
+            _compileService = compileService;
         }
 
         protected override bool Handle(string path)
@@ -24,7 +26,9 @@ namespace QueryEngine.Handlers
 
         protected override string Execute(QueryInput input)
         {
-            return _service.GetSchemaSource(input.ConnectionString, input.Text);
+            var schema = _schemaService.GetSchemaSource(input.ConnectionString, "debug");
+            var transformed = _compileService.TransformSource(input.Text, schema, "debug");
+            return schema + "\n\n=>\n\n" + transformed;
         }
     }
 }

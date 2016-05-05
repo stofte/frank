@@ -23,6 +23,7 @@ namespace QueryEngine
             var queryService = new QueryService(compiler);
             services.AddSingleton<QueryService>(queryService);
             services.AddSingleton<SchemaService>(schemaService);
+            services.AddSingleton<CompileService>(compiler);
         }
     }
 }

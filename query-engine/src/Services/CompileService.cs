@@ -30,6 +30,14 @@ namespace QueryEngine.Services
             AssemblyLoadContext.InitializeDefaultContext(LibraryLoader.Instance.Value);
         }
 
+        public string TransformSource(string querySource, string schemaSource, string assemblyName) 
+        {
+            var programSource = _template.Replace("##SOURCE##", querySource).Replace("##NS##", assemblyName) 
+                + "\n" + schemaSource;
+            var tree = CSharpSyntaxTree.ParseText(programSource);
+            return tree.ToString();
+        }
+
         public Type LoadProgram(string source, string connectionString) 
         {
             var assemblyName = Guid.NewGuid().ToIdentifierWithPrefix("a");
