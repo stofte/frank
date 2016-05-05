@@ -11,12 +11,9 @@ namespace QueryEngine.Services
     using Microsoft.Extensions.Logging;
     using Microsoft.DotNet.ProjectModel.Workspaces;
     using Microsoft.CodeAnalysis;
-    using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.Emit;
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.EntityFrameworkCore.Scaffolding.Internal;
-    using Microsoft.EntityFrameworkCore.Design;
-    using Microsoft.EntityFrameworkCore.Design.Internal;
+    using Microsoft.CodeAnalysis.CSharp;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
 
     public class CompileService
     {
@@ -32,10 +29,28 @@ namespace QueryEngine.Services
 
         public string TransformSource(string querySource, string schemaSource, string assemblyName) 
         {
+            var replacements = new Dictionary<SyntaxNode, SyntaxNode>();
             var programSource = _template.Replace("##SOURCE##", querySource).Replace("##NS##", assemblyName) 
                 + "\n" + schemaSource;
             var tree = CSharpSyntaxTree.ParseText(programSource);
-            return tree.ToString();
+            var nodes = tree.GetRoot().DescendantNodes().OfType<NamespaceDeclarationSyntax>().Skip(2)
+                .SelectMany(ns => ns.DescendantNodes())
+                .OfType<ClassDeclarationSyntax>();
+
+            foreach (var node in nodes)
+            {
+                var newNode = node
+                    .WithAttributeLists(
+                        SyntaxFactory.SingletonList<AttributeListSyntax>(
+                            SyntaxFactory.AttributeList(
+                                SyntaxFactory.SingletonSeparatedList<AttributeSyntax>(
+                                    SyntaxFactory.Attribute(
+                                        SyntaxFactory.IdentifierName("Foo"))))));
+                replacements.Add(node, newNode);
+            }
+
+            var newTree = tree.GetRoot().ReplaceNodes(replacements.Keys, (n1, n2) => replacements[n1]);
+            return newTree.NormalizeWhitespace().ToString();
         }
 
         public Type LoadProgram(string source, string connectionString) 
