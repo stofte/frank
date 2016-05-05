@@ -29,8 +29,8 @@ export default class OmnisharpService {
         this.http.fetch(this.action('checkreadystatus'))
             .then(() => console.log('omnisharp already running'))
             .catch(() => {
-                let slnPath = 'C:/src/frank/server';
-                let cmd = `${__dirname}/omnisharp/Omnisharp.exe -s ${slnPath} -p ${this.port}`;
+                let slnPath = 'C:/src/frank/query-engine';
+                let cmd = `${__dirname}/../omnisharp/Omnisharp.exe -s ${slnPath} -p ${this.port}`;
                 this.process = child_process.exec(cmd, (error, stdout, stderr) => {
                     console.log('returned');
                     console.log(`stdout: ${stdout}`);
