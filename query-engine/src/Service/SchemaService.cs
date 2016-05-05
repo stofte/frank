@@ -1,4 +1,4 @@
-namespace QueryEngine 
+namespace QueryEngine.Service
 {
     using System;
     using System.Text;

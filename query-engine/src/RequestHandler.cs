@@ -5,6 +5,7 @@ namespace QueryEngine
     using System.Runtime.Serialization.Json;
     using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.Logging;
+    using QueryEngine.Service;
 
     public class RequestHandler
     {

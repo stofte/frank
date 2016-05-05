@@ -17,7 +17,6 @@ namespace QueryEngine.Service
     using Microsoft.EntityFrameworkCore.Scaffolding.Internal;
     using Microsoft.EntityFrameworkCore.Design;
     using Microsoft.EntityFrameworkCore.Design.Internal;
-    using Newtonsoft.Json;
 
     public class CompileService
     {

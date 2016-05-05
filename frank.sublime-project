@@ -16,7 +16,7 @@
 		{
 			"name": "config",
 			"path": ".",
-			"file_include_patterns": ["*.sublime-project", "*.json", "*.js", "index.html", ".gitignore"],
+			"file_include_patterns": ["*.sublime-project", "*.json", "*.js", "index.html", ".gitignore", "*.md"],
 			"folder_exclude_patterns": ["node_modules", "jspm_packages", "shell", "omnisharp", "query-engine", "artifacts"]
 		}
 	]
