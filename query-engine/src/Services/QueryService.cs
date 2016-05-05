@@ -15,7 +15,7 @@ namespace QueryEngine.Services
 
         public string ExecuteQuery(QueryInput input)
         {
-            var programType = _compiler.LoadProgram(input.Source, input.ConnectionString);
+            var programType = _compiler.LoadProgram(input.Text, input.ConnectionString);
             var method = programType.GetMethod("Main");
             var programInstance = Activator.CreateInstance(programType);
             var res = method.Invoke(programInstance, new object[] { }) as string;

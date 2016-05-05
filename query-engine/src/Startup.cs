@@ -12,6 +12,7 @@ namespace QueryEngine
         {
             loggerFactory.AddConsole(LogLevel.Debug);
             app.UseMiddleware<StatusHandler>();
+            app.UseMiddleware<QueryHandler>();
         }
 
         public void ConfigureServices(IServiceCollection services)

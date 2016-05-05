@@ -7,7 +7,7 @@ namespace QueryEngine.Handlers
     using Microsoft.Extensions.Logging;
     using QueryEngine.Services;
 
-    public class StatusHandler : BaseHandler<bool>
+    public class StatusHandler : BaseHandler<bool, string>
     {
         public StatusHandler(RequestDelegate next) : base(next) { }
 
@@ -16,7 +16,7 @@ namespace QueryEngine.Handlers
             return path.Contains("/status");
         }
 
-        protected override bool Execute()
+        protected override bool Execute(string input)
         {
             return true;
         }

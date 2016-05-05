@@ -40,7 +40,7 @@ namespace QueryEngine.Services
                     scaffoldingUtilities: scaffUtils,
                     cSharpUtilities: csUtils
                 ),
-                entityTypeWriter: new EntityTypeWriter(cSharpUtilities: csUtils)
+                entityTypeWriter: new EntityTypeWriter(cSharpUtilities: csUtils, scaffoldingUtilities: scaffUtils)
             );
 
             var rGen = new ReverseEngineeringGenerator(
