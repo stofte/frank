@@ -10,7 +10,7 @@
 		},
 		{
 			"path": "query-engine",
-			"file_include_patterns": ["*.cs", "*.json", ".gitignore", "*.config"],
+			"file_include_patterns": ["*.cs", "*.json", ".gitignore", "*.config", "*.cmd"],
 			"folder_exclude_patterns": ["bin", "obj"]
 		},
 		{
