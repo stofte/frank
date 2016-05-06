@@ -1,6 +1,7 @@
 namespace QueryEngine.Services
 {
     using System;
+    using System.Diagnostics;
     using System.Collections.Generic;
     using System.Reflection;
     using QueryEngine.Models;
@@ -18,17 +19,26 @@ namespace QueryEngine.Services
 
         public IDictionary<string, object> ExecuteQuery(QueryInput input)
         {
+            var sw = new Stopwatch();
+            sw.Start();
             var contextResult = _databaseContextService.GetDatabaseContext(input.ConnectionString);
             var assmName = Guid.NewGuid().ToIdentifierWithPrefix("a");
             var programSource = _template
                 .Replace("##SOURCE##", input.Text)
                 .Replace("##NS##", assmName)
                 .Replace("##DB##", contextResult.Type.ToString());
-
+            var e1 = sw.Elapsed.TotalMilliseconds;
+            sw.Reset();
+            sw.Start();
             var result = _compiler.LoadType(programSource, assmName, contextResult.Reference);
             var method = result.Type.GetMethod("Run");
             var programInstance = Activator.CreateInstance(result.Type);
+            var e2 = sw.Elapsed.TotalMilliseconds;
+            sw.Reset();
+            sw.Start();
             var res = method.Invoke(programInstance, new object[] { }) as IDictionary<string, object>;
+            var e3 = sw.Elapsed.TotalMilliseconds;
+            res.Add("Performance", new { DbContext = e1, Loading = e2, Execution = e3 });
             return res;
         }
 
@@ -47,18 +57,15 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace ##NS##
 {
-    public partial class Program : ##DB##
+    public class Main : ##DB##
     {
         public IDictionary<string, object> Run()
         {
-            using (var ctx = new Program()) 
-            {
-                // todo need something better
-                Dumper._results = new Dictionary<string, object>();
-                Dumper._count = 0;
-                ctx.Query();
-                return Dumper._results;
-            }
+            // todo need something better
+            Dumper._results = new Dictionary<string, object>();
+            Dumper._count = 0;
+            Query();
+            return Dumper._results;
         }
 
         void Query()

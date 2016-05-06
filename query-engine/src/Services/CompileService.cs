@@ -41,19 +41,17 @@ namespace QueryEngine.Services
         
         public CompileResult LoadType(string source, string assemblyName, MetadataReference context = null)
         {
-            var prj = new ProjectJsonWorkspace(_projectjsonPath)
-                .CurrentSolution.Projects.First();
-            var compilerOptions = new CSharpCompilationOptions(outputKind: OutputKind.DynamicallyLinkedLibrary);
-
-            var trees = new SyntaxTree[] {
-                CSharpSyntaxTree.ParseText(source),
-            };
-
-            var references = GetReferences();//.Concat(context == null ? new MetadataReference[] {} : new MetadataReference[] { MetadataReference.CreateFromAssembly(context) });
+            var references = GetReferences();
             if (context != null)
             {
                 references = references.Concat(new MetadataReference[] { context });
             }
+
+            var compilerOptions = new CSharpCompilationOptions(outputKind: OutputKind.DynamicallyLinkedLibrary);
+            var trees = new SyntaxTree[] {
+                CSharpSyntaxTree.ParseText(source),
+            };
+
             var compilation = CSharpCompilation.Create(assemblyName)
                 .WithOptions(compilerOptions)
                 .WithReferences(references)
@@ -71,7 +69,7 @@ namespace QueryEngine.Services
             }
             LibraryLoader.Instance.Value.AssemblyStream = stream;
             var asm = LibraryLoader.Instance.Value.LoadFromAssemblyName(new AssemblyName(assemblyName));
-            var programType = asm.GetTypes().Single(t => t.Name == "Program");
+            var programType = asm.GetTypes().Single(t => t.Name == "Main");
             stream.Position = 0;
 
             return new CompileResult 
