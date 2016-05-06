@@ -1,6 +1,7 @@
 namespace QueryEngine.Services
 {
     using System;
+    using System.Collections.Generic;
     using System.Reflection;
     using QueryEngine.Models;
 
@@ -13,12 +14,12 @@ namespace QueryEngine.Services
             _compiler = compiler;
         }
 
-        public string ExecuteQuery(QueryInput input)
+        public IDictionary<string, object> ExecuteQuery(QueryInput input)
         {
             var programType = _compiler.LoadProgram(input.Text, input.ConnectionString);
-            var method = programType.GetMethod("Main");
+            var method = programType.GetMethod("Run");
             var programInstance = Activator.CreateInstance(programType);
-            var res = method.Invoke(programInstance, new object[] { }) as string;
+            var res = method.Invoke(programInstance, new object[] { }) as IDictionary<string, object>;
             return res;
         }
     }

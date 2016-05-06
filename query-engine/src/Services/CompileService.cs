@@ -77,9 +77,9 @@ namespace QueryEngine.Services
             stream.Position = 0;
             if (!compilationResult.Success) 
             {
-                foreach(var r in compilationResult.Diagnostics) 
+                foreach(var r in compilationResult.Diagnostics.Where(x => x.Severity == DiagnosticSeverity.Error)) 
                 {
-                    Console.WriteLine("Diagnostics: {0}", r);
+                    Console.WriteLine("Error: {0}", r);
                 }
             }
 
@@ -91,8 +91,10 @@ namespace QueryEngine.Services
         
         string _template = @"
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
@@ -104,17 +106,53 @@ namespace ##NS##
 {
     public partial class Program
     {
-        public static string Main()
+        public IDictionary<string, object> Run()
         {
             using (var ctx = new Program()) 
             {
-                return ctx.Execute();
+                // todo need something better
+                Dumper._results = new Dictionary<string, object>();
+                Dumper._count = 0;
+                ctx.Query();
+                return Dumper._results;
             }
         }
 
-        string Execute() 
+        void Query()
         {
-            return ##SOURCE##;
+##SOURCE##
+        }
+    }
+
+    public static class Dumper 
+    {
+        public static IDictionary<string, object> _results;
+        public static int _count;
+
+        public static T Dump<T>(this T o)
+        {
+            // since the context is lost when returning, we tolist anything we dump
+            var name = o.GetType().Name;
+            object result = null;
+            
+            if (o is IEnumerable<object>)
+            {
+                name = o.GetType().GetTypeInfo().GenericTypeArguments[0].Name;
+                var ol = o as IEnumerable<object>;
+                result = ol.ToList();
+            }
+            else
+            {
+                result = o;
+            }
+            var displayName = string.Format(""{0} {1}"", PrettyAnonymous(name), ++_count);
+            _results.Add(displayName, result);
+            return o;
+        }
+
+        static string PrettyAnonymous(string name) 
+        {
+            return name.Contains(""AnonymousType"") ? ""AnonymousType"" : name;
         }
     }
 }

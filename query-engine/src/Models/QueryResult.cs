@@ -1,9 +1,10 @@
 namespace QueryEngine.Models
 {
+    using System.Collections.Generic;
     using System.Runtime.Serialization;
 
     public class QueryResult 
     {
-        public object Value { get; set; }
+        public IDictionary<string, object> Results { get; set; }
     }
 }

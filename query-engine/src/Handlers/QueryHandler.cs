@@ -27,7 +27,7 @@ namespace QueryEngine.Handlers
             var res = _service.ExecuteQuery(input);
             return new QueryResult
             {
-                Value = res
+                Results = res
             };
         }
     }
