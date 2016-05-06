@@ -64,12 +64,13 @@ namespace QueryEngine.Services
             var output = new StringBuilder();
             var resFiles = rGen.GenerateAsync(conf);
             resFiles.Wait();
-            output.Append(StripHeaderLines(2, fs.RetrieveFileContents(outputPath, programName + ".cs")));
+            output.Append(_refs);
+            output.Append(fs.RetrieveFileContents(outputPath, programName + ".cs"));
             foreach(var fpath in resFiles.Result.EntityTypeFiles)
             {
                 output.Append(StripHeaderLines(4, fs.RetrieveFileContents(outputPath, System.IO.Path.GetFileName(fpath))));
             }
-
+            
             return output.ToString();
         }
 
@@ -77,5 +78,12 @@ namespace QueryEngine.Services
         {
             return string.Join("\n", contents.Split('\n').Skip(lines));
         }
+
+        string _refs = @"
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+";
     }
 }

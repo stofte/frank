@@ -20,10 +20,12 @@ namespace QueryEngine
         {
             var schemaService = new SchemaService();
             var compiler = new CompileService(schemaService);
-            var queryService = new QueryService(compiler);
+            var dbContextService = new DatabaseContextService(schemaService, compiler);
+            var queryService = new QueryService(compiler, dbContextService);
             services.AddSingleton<QueryService>(queryService);
             services.AddSingleton<SchemaService>(schemaService);
             services.AddSingleton<CompileService>(compiler);
+            services.AddSingleton<DatabaseContextService>(dbContextService);
         }
     }
 }

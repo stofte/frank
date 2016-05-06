@@ -16,11 +16,13 @@ namespace QueryEngine.Handlers
     {
         SchemaService _schemaService;
         CompileService _compileService;
+        DatabaseContextService _dbContextService;
 
-        public DebugHandler(RequestDelegate next, SchemaService service, CompileService compileService) : base(next) 
+        public DebugHandler(RequestDelegate next, SchemaService service, CompileService compileService, DatabaseContextService dbContextService) : base(next) 
         {
             _schemaService = service;
             _compileService = compileService;
+            _dbContextService = dbContextService;
         }
 
         protected override bool Handle(string path)
@@ -30,10 +32,11 @@ namespace QueryEngine.Handlers
 
         protected override string Execute(QueryInput input)
         {
-            var schema = _schemaService.GetSchemaSource(input.ConnectionString, "debug");
-            var transformed = _compileService.TransformSource(input.Text, schema, "debug");
-            var x = new List<DebugHandler>();
-            return JsonConvert.SerializeObject(x.GetType().GetTypeInfo().GenericTypeArguments[0]); //schema + "\n\n=>\n\n" + transformed;
+            var t = _dbContextService.GetDatabaseContext(input.ConnectionString);
+            // var schema = _schemaService.GetSchemaSource(input.ConnectionString, "debug");
+            // var transformed = _compileService.TransformSource(input.Text, schema, "debug");
+            // var x = new List<DebugHandler>();
+            return t.ToString();
         }
     }
 }
