@@ -1,27 +1,12 @@
 ﻿namespace QueryEngine
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.IO;
-    using System.Text;
-    using System.Threading.Tasks;
-    using System.Reflection;
-    using System.Runtime.Loader;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Configuration;
     using Microsoft.DotNet.ProjectModel.Workspaces;
-    using Microsoft.CodeAnalysis;
-    using Microsoft.CodeAnalysis.CSharp;
-    using Microsoft.CodeAnalysis.Emit;
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.EntityFrameworkCore.Scaffolding.Internal;
-    using Microsoft.EntityFrameworkCore.Design;
-    using Microsoft.EntityFrameworkCore.Design.Internal;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Hosting;
-    using QueryEngine.Models;
 
     public class Program
     {
