@@ -7,17 +7,18 @@ namespace QueryEngine.Handlers
     using Microsoft.Extensions.Logging;
     using QueryEngine.Services;
 
-    public class StatusHandler : BaseHandler<bool, string>
+    public class StopServerHandler : BaseHandler<bool, string>
     {
-        public StatusHandler(RequestDelegate next) : base(next) { }
+        public StopServerHandler(RequestDelegate next) : base(next) { }
 
         protected override bool Handle(string path)
         {
-            return path.Contains("/status");
+            return path.Contains("/stopserver");
         }
 
         protected override bool Execute(string input)
         {
+            QueryEngine.Program.AppLifeTime.StopApplication();
             return true;
         }
     }

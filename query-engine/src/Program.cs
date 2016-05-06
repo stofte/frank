@@ -10,6 +10,8 @@
 
     public class Program
     {
+        public static IApplicationLifetime AppLifeTime;
+
         public static void Main(string[] args)
         {
             var config = new ConfigurationBuilder()
@@ -22,8 +24,8 @@
             using (var app = builder.Build())
             {
                 app.Start();
-                var appLifeTime = (IApplicationLifetime) app.Services.GetService(typeof(IApplicationLifetime));
-                appLifeTime.ApplicationStopping.WaitHandle.WaitOne();
+                AppLifeTime = (IApplicationLifetime) app.Services.GetService(typeof(IApplicationLifetime));
+                AppLifeTime.ApplicationStopping.WaitHandle.WaitOne();
             }
         }
     }

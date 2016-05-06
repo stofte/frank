@@ -11,8 +11,9 @@ namespace QueryEngine
         public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddConsole(LogLevel.Debug);
-            app.UseMiddleware<StatusHandler>();
-            app.UseMiddleware<QueryHandler>();
+            app.UseMiddleware<CheckReadyStatusHandler>();
+            app.UseMiddleware<StopServerHandler>();
+            app.UseMiddleware<ExecuteQueryHandler>();
             app.UseMiddleware<DebugHandler>();
         }
 

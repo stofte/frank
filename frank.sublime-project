@@ -7,6 +7,7 @@
 		{
 			"path": "shell",
 			"file_include_patterns": ["*.js", "*.html", "*.css"],
+			"folder_exclude_patterns": ["node_modules", "jspm_packages"]
 		},
 		{
 			"path": "query-engine",
@@ -17,7 +18,7 @@
 			"name": "config",
 			"path": ".",
 			"file_include_patterns": ["*.sublime-project", "*.json", "*.js", "index.html", ".gitignore", "*.md"],
-			"folder_exclude_patterns": ["node_modules", "jspm_packages", "shell", "omnisharp", "query-engine", "artifacts"]
+			"folder_exclude_patterns": ["shell", "omnisharp", "query-engine", "artifacts"]
 		}
 	]
 }

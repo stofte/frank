@@ -8,18 +8,18 @@ namespace QueryEngine.Handlers
     using QueryEngine.Services;
     using QueryEngine.Models;
 
-    public class QueryHandler : BaseHandler<QueryResult, QueryInput>
+    public class ExecuteQueryHandler : BaseHandler<QueryResult, QueryInput>
     {
         QueryService _service;
 
-        public QueryHandler(RequestDelegate next, QueryService service) : base(next) 
+        public ExecuteQueryHandler(RequestDelegate next, QueryService service) : base(next) 
         {
             _service = service; 
         }
 
         protected override bool Handle(string path)
         {
-            return path.Contains("/query");
+            return path.Contains("/executequery");
         }
 
         protected override QueryResult Execute(QueryInput input)
