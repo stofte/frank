@@ -38,7 +38,7 @@ namespace QueryEngine.Services
             sw.Start();
             var res = method.Invoke(programInstance, new object[] { }) as IDictionary<string, object>;
             var e3 = sw.Elapsed.TotalMilliseconds;
-            res.Add("Performance", new { DbContext = e1, Loading = e2, Execution = e3 });
+            //res.Add("Performance", new { DbContext = e1, Loading = e2, Execution = e3 });
             return res;
         }
 

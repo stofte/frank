@@ -3,7 +3,7 @@ import {EventAggregator} from 'aurelia-event-aggregator';
 
 @inject(EventAggregator)
 export class ControlPanel {
-    connectionString = 'Data Source=.\\sqlexpress;Integrated Security=True;Initial Catalog=eftest';
+    connectionString = 'Data Source=.\\sqlexpress;Integrated Security=True;Initial Catalog=Opera18500DB';
     ea = null;
     constructor(ea) {
         this.ea = ea;

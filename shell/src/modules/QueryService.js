@@ -12,12 +12,10 @@ export default class QueryService {
     constructor(ea, http) {
         this.ea = ea;
         this.http = http;
-        console.log('http is', http);
         this.ea.subscribe('queryExecute', this.queryExecuteHandler.bind(this));
     }
 
     queryExecuteHandler(data) {
-        console.log('queryExecuteHandler', JSON.stringify(data));
         this.http
             .fetch(`http://localhost:${config.queryEnginePort}/executequery`, {
                 method: 'post',
