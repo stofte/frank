@@ -6,9 +6,9 @@ const child_process = require('child_process');
 const ipc = require('electron').ipcRenderer;
 
 @inject(HttpClient)
-export default class OmnisharpService {
+export default class QueryEngineService {
     process = null;
-    port = config.omnisharpPort;
+    port = config.queryEnginePort;
     started = false;
     http = null;
 
@@ -19,7 +19,7 @@ export default class OmnisharpService {
 
     applicationEventHandler(event, msg) {
         if (msg === 'close') {
-            let cb = () => ipc.send('application-event', 'close-omnisharp');
+            let cb = () => ipc.send('application-event', 'close-query-engine');
             this.http.fetch(this.action('stopserver'))
                 .then(cb, cb); // todo this is stupid
         }
@@ -27,11 +27,12 @@ export default class OmnisharpService {
 
     start() {
         this.http.fetch(this.action('checkreadystatus'))
-            .then(() => console.log('omnisharp already running'))
+            .then(() => console.log('query-engine already running'))
             .catch(() => {
-                let slnPath = 'C:/src/frank/query-engine';
-                let cmd = `C:/src/frank/omnisharp/Omnisharp.exe -s ${slnPath} -p ${this.port}`;
-                this.process = child_process.exec(cmd, (error, stdout, stderr) => {
+                let cmd = '"C:/Program Files/dotnet/dotnet.exe" run';
+                this.process = child_process.exec(cmd, {
+                    cwd: 'C:/src/frank/query-engine'
+                }, (error, stdout, stderr) => {
                     console.log('returned');
                     console.log(`stdout: ${stdout}`);
                     console.log(`stderr: ${stderr}`);            

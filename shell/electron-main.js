@@ -8,7 +8,8 @@ const BrowserWindow = electron.BrowserWindow;  // Module to create native browse
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow = null;
-let cleanedUp = false;
+let cleanedUpQueryEngine = false;
+let cleanedUpOmnisharp = false;
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
@@ -25,7 +26,7 @@ app.on('ready', function() {
 
     // msg app that we're closing and wait for the response
     mainWindow.on('close', function(event) {
-        if (!cleanedUp) {
+        if (!(cleanedUpQueryEngine && cleanedUpOmnisharp)) {
             mainWindow.webContents.send('application-event', 'close');
             //mainWindow.hide();
             event.preventDefault();
@@ -42,8 +43,12 @@ app.on('ready', function() {
     });
 
     ipc.on('application-event', function(event, msg) {
-        if (msg === 'close') {
-            cleanedUp = true;
+        if (msg === 'close-query-engine') {
+            cleanedUpQueryEngine = true;
+        } else if (msg === 'close-omnisharp') {
+            cleanedUpOmnisharp = true;
+        }
+        if (cleanedUpQueryEngine && cleanedUpOmnisharp) {
             mainWindow.close();
         }
     });

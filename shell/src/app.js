@@ -1,19 +1,23 @@
 import {inject} from 'aurelia-framework';
 import CodeMirror from 'codemirror';
 import OmnisharpService from './module/OmnisharpService';
+import QueryEngineService from './module/QueryEngineService';
 
 import 'codemirror/lib/codemirror.css!';
 import 'normalize.css/normalize.css!';
 import './style/basic.css!';
 
-@inject(OmnisharpService)
+@inject(OmnisharpService, QueryEngineService)
 export class App {
     mirror = null;
     omnisharp = null;
+    queryEngine = null;
 
-    constructor(omnisharp) {
+    constructor(omnisharp, queryEngine) {
         this.omnisharp = omnisharp;
+        this.queryEngine = queryEngine;
         this.omnisharp.start();
+        this.queryEngine.start();
     }
 
     attached() {
