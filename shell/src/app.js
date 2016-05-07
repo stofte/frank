@@ -1,5 +1,4 @@
 import {inject} from 'aurelia-framework';
-//import OmnisharpService from './modules/OmnisharpService';
 import ServiceMonitor from './modules/ServiceMonitor';
 import 'normalize.css/normalize.css!';
 import './styles/basic.css!';
