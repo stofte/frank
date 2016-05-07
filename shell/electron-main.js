@@ -15,7 +15,7 @@ let cleanedUpOmnisharp = false;
 // initialization and is ready to create browser windows.
 app.on('ready', function() {
     // Create the browser window.
-    mainWindow = new BrowserWindow({width: 800, height: 600, title: 'Frank'});
+    mainWindow = new BrowserWindow({width: 1100, height: 900, title: 'Frank'});
     //mainWindow.maximize();
 
     // and load the index.html of the app.

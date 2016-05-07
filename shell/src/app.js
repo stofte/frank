@@ -1,29 +1,16 @@
 import {inject} from 'aurelia-framework';
-import CodeMirror from 'codemirror';
-import OmnisharpService from './module/OmnisharpService';
-import QueryEngineService from './module/QueryEngineService';
-
-import 'codemirror/lib/codemirror.css!';
+//import OmnisharpService from './modules/OmnisharpService';
+import ServiceMonitor from './modules/ServiceMonitor';
 import 'normalize.css/normalize.css!';
-import './style/basic.css!';
+import './styles/basic.css!';
 
-@inject(OmnisharpService, QueryEngineService)
+@inject(ServiceMonitor)
 export class App {
-    mirror = null;
-    omnisharp = null;
-    queryEngine = null;
+    serviceMonitor = null;
 
-    constructor(omnisharp, queryEngine) {
-        this.omnisharp = omnisharp;
-        this.queryEngine = queryEngine;
-        this.omnisharp.start();
-        this.queryEngine.start();
-    }
-
-    attached() {
-        this.mirror = CodeMirror.fromTextArea(this.editorElement, {
-            lineNumbers: true
-        });
+    constructor(serviceMonitor) {
+        this.serviceMonitor = serviceMonitor;
+        this.serviceMonitor.start();
     }
 
     get electronVersion() {

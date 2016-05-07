@@ -6,7 +6,7 @@
 	"folders": [
 		{
 			"path": "shell",
-			"file_include_patterns": ["*.js", "*.html", "*.css"],
+			"file_include_patterns": ["*.js", "*.html", "*.css", "*.json"],
 			"folder_exclude_patterns": ["node_modules", "jspm_packages"]
 		},
 		{
