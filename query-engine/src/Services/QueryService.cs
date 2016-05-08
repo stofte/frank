@@ -10,11 +10,13 @@ namespace QueryEngine.Services
     {
         CompileService _compiler;
         DatabaseContextService _databaseContextService;
+        SchemaService _schemaService;
 
-        public QueryService(CompileService compiler, DatabaseContextService databaseContextService)
+        public QueryService(CompileService compiler, DatabaseContextService databaseContextService, SchemaService schemaService)
         {
             _compiler = compiler;
             _databaseContextService = databaseContextService;
+            _schemaService = schemaService;
         }
 
         public IDictionary<string, object> ExecuteQuery(QueryInput input)
@@ -40,6 +42,19 @@ namespace QueryEngine.Services
             var e3 = sw.Elapsed.TotalMilliseconds;
             //res.Add("Performance", new { DbContext = e1, Loading = e2, Execution = e3 });
             return res;
+        }
+
+        public TemplateResult GetTemplate(QueryInput input) 
+        {
+            var assmName = Guid.NewGuid().ToIdentifierWithPrefix("a");
+            var schemaSrc = _schemaService.GetSchemaSource(input.ConnectionString, assmName, withUsings: false);
+            var src = _template
+                .Replace("##NS##", assmName)
+                .Replace("##DB##", "Proxy");
+            return new TemplateResult {
+                Template = src + schemaSrc,
+                Namespace = assmName
+            };
         }
 
         string _template = @"

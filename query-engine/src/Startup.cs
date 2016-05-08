@@ -14,6 +14,7 @@ namespace QueryEngine
             app.UseMiddleware<CheckReadyStatusHandler>();
             app.UseMiddleware<StopServerHandler>();
             app.UseMiddleware<ExecuteQueryHandler>();
+            app.UseMiddleware<QueryTemplateHandler>();
             app.UseMiddleware<DebugHandler>();
         }
 
@@ -22,7 +23,7 @@ namespace QueryEngine
             var schemaService = new SchemaService();
             var compiler = new CompileService(schemaService);
             var dbContextService = new DatabaseContextService(schemaService, compiler);
-            var queryService = new QueryService(compiler, dbContextService);
+            var queryService = new QueryService(compiler, dbContextService, schemaService);
             services.AddSingleton<QueryService>(queryService);
             services.AddSingleton<SchemaService>(schemaService);
             services.AddSingleton<CompileService>(compiler);

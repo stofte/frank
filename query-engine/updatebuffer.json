@@ -1,0 +1,5 @@
+{
+    "FileName": "C:\\src\\frank\\project\\Program.cs",
+    "FromDisk": false,
+    "Buffer": "\nusing System;\n\nnamespace Foo {\n    public class Program {\n        public static void Main() {\n\n            return;\n        }\n    }\n}\n"
+}

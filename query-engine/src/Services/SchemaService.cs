@@ -13,7 +13,7 @@ namespace QueryEngine.Services
     
     public class SchemaService 
     {
-        public string GetSchemaSource(string connectionString, string assemblyNamespace) 
+        public string GetSchemaSource(string connectionString, string assemblyNamespace, bool withUsings = true) 
         {
             var loggerFactory = new LoggerFactory().AddConsole();
 
@@ -65,8 +65,17 @@ namespace QueryEngine.Services
             var output = new StringBuilder();
             var resFiles = rGen.GenerateAsync(conf);
             resFiles.Wait();
-            output.Append(_refs);
-            var ctx = CreateContext(fs.RetrieveFileContents(outputPath, programName + ".cs"));
+            
+            var ctx = CreateContext(fs.RetrieveFileContents(outputPath, programName + ".cs"), isLibrary: withUsings);
+            Console.WriteLine("CreateContext", ctx);
+            if (!withUsings) 
+            {
+                ctx = StripHeaderLines(3, ctx);
+            }
+            else
+            {
+                output.Append(_refs);
+            }
             output.Append(ctx);
             foreach(var fpath in resFiles.Result.EntityTypeFiles)
             {
@@ -80,7 +89,7 @@ namespace QueryEngine.Services
             return string.Join("\n", contents.Split('\n').Skip(lines));
         }
 
-        string CreateContext(string ctx) 
+        string CreateContext(string ctx, bool isLibrary = true) 
         {
             var idx1 = ctx.IndexOf("{");
             var idx = ctx.IndexOf("{", idx1 + 1) + 1;
@@ -89,7 +98,7 @@ namespace QueryEngine.Services
             var newCtx = pre + _instance + post.Substring(0, post.Length - 2);
             var regex = new Regex(@"^\s*public virtual DbSet\<([^>]*).*$", RegexOptions.Multiline);
             var tables = regex.Matches(ctx);
-            var proxyCtx = _proxyPre;
+            var proxyCtx = _proxyPre.Replace("##PROXY##", isLibrary ? "Main" : "Proxy");
             foreach(Match t in tables)
             {
                 var proxy = "get { return Ctx.Instance.Value." + t.Groups[1].Value + "; }";
@@ -110,7 +119,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 ";
 
         string _proxyPre = @"
-    public class Main
+    public class ##PROXY##
     {
 ";
 
