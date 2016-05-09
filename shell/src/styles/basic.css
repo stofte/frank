@@ -1,8 +1,0 @@
-html, body {
-    height: 100%;
-}
-
-section, div.CodeMirror {
-    height: 50%;
-    width: 100%;
-}

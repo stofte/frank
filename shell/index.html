@@ -1,15 +1,29 @@
-<!doctype html>
 <html>
-  <head>
-    <title>Frank</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-  </head>
-  <body aurelia-app>
-    <script src="jspm_packages/system.js"></script>
-    <script src="config.js"></script>
-    <script>
-      SystemJS.import('aurelia-bootstrapper');
-    </script>
-  </body>
+    <head>
+        <title>Frank</title>
+        <base href="file:///C:/src/frank/shell/app" />
+        <script>
+        // angular2 messed with these symbols, so save them before anything
+        // http://electron.atom.io/docs/v0.37.2/faq/electron-faq/
+        window.electronRequire = require;
+        delete window.require;
+        delete window.exports;
+        delete window.module;
+        </script>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="styles.css">
+        <script src="node_modules/es6-shim/es6-shim.min.js"></script>
+        <script src="node_modules/zone.js/dist/zone.js"></script>
+        <script src="node_modules/reflect-metadata/Reflect.js"></script>
+        <script src="node_modules/systemjs/dist/system.src.js"></script>
+        <script src="systemjs.config.js"></script>
+        <script>
+            System.import('app').catch(function(err){ console.error(err);  });
+        </script>
+    </head>
+
+    <body>
+        <f-app>Loading...</f-app>
+    </body>
 </html>
