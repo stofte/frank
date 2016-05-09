@@ -1,0 +1,10 @@
+.main-layer {
+  position: absolute;
+  visibility: hidden;
+  z-index: 0;
+}
+
+.main-layer.layer-visible {
+    visibility: visible;
+  z-index: 1;
+}
