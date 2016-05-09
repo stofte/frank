@@ -1,15 +1,31 @@
 import {inject} from 'aurelia-framework';
+import {Router} from 'aurelia-router';
 import ServiceMonitor from './modules/ServiceMonitor';
 import 'normalize.css/normalize.css!';
 import './styles/basic.css!';
 
-@inject(ServiceMonitor)
+@inject(Router, ServiceMonitor)
 export class App {
     serviceMonitor = null;
+    router = null;
 
-    constructor(serviceMonitor) {
+    constructor(router, serviceMonitor) {
+        this.router = router;
         this.serviceMonitor = serviceMonitor;
+        this.router.configure(config => {
+            config.map([
+                { name: 'start', route: ['','start'], moduleId: 'widgets/TabControl' }
+            ]);
+        });
         this.serviceMonitor.start();
+    }
+
+    attached() {
+        console.log('attached');
+    }
+
+    configureRouter(config, router) {
+        console.log('configureRouter', config, router);
     }
 
     get electronVersion() {

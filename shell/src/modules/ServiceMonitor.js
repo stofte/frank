@@ -24,7 +24,7 @@ export default class ServiceMonitor {
     }
 
     start() {
-        let slnPath = 'C:/src/frank/query-engine';
+        let slnPath = 'C:/src/frank/project';
         var queryCmd = '"C:/Program Files/dotnet/dotnet.exe" run';
         let omnisharpCmd = `C:/src/frank/omnisharp/Omnisharp.exe -s ${slnPath} -p ${config.omnisharpPort}`;
 
@@ -32,9 +32,10 @@ export default class ServiceMonitor {
             .then(() => console.log(`omnisharp already running on ${config.omnisharpPort}`))
             .catch(() => this.startProcess(omnisharpCmd, { }));
 
+        let dotnetCwd = 'C:/src/frank/query-engine';
         this.http.fetch(this.action(config.queryEnginePort, 'checkreadystatus'))
             .then(() => console.log(`query-engine already running on ${config.queryEnginePort}`))
-            .catch(() => this.startProcess(queryCmd, { cwd: slnPath }));
+            .catch(() => this.startProcess(queryCmd, { cwd: dotnetCwd }));
     }
 
     startProcess(cmd, options) {
