@@ -2,6 +2,7 @@ import { provide, Component } from '@angular/core';
 import { RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS, Router } from '@angular/router-deprecated';
 
 import { MonitorService } from './services/monitor.service';
+import { ConnectionService } from './services/connection.service';
 
 import { StartPageComponent } from './components/start-page.component';
 import { BufferTabComponent } from './components/buffer-tab.component';
@@ -25,8 +26,18 @@ import { ConnectionManagerComponent } from './components/connection-manager.comp
 `
 })
 export class AppComponent { 
-    constructor(private monitorService : MonitorService, private router : Router) {
+    constructor(
+        private monitorService : MonitorService, 
+        private connectionService: ConnectionService,
+        private router : Router) {
         monitorService.start();
-        router.navigate(['StartPage']);
+        
+        // decide where to go
+        let connection = connectionService.DefaultConnection;
+        if (!connection) {
+            router.navigate(['StartPage']);
+        } else {
+            router.navigate(['EditorTab', 0]);
+        }
     }
 }

@@ -6,6 +6,7 @@ export class StorageService {
     public Load(key: string, defaultValue: any) : any {
         try {
             var val = localStorage.getItem(key);
+            if (!val) return defaultValue;
             return JSON.parse(val);
         }
         catch (exn) {

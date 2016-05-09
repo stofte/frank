@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class OverlayUiStateService {
-    private _visible = false
+    private visible = false
     
     public toggle() {
-        this._visible = true;
+        this.visible = true;
     }
 }
