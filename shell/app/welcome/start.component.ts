@@ -6,6 +6,6 @@ import { Component } from '@angular/core';
     <div>welcome to frank</div>
 `    
 })
-export class Start {
+export class StartComponent {
     
 }

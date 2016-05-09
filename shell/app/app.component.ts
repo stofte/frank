@@ -2,12 +2,12 @@ import { provide, Component } from '@angular/core';
 import { RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS, Router } from '@angular/router-deprecated';
 
 import { MonitorService } from './service/monitor.service';
-import { Start } from './welcome/start.component';
-
-console.log(location.href);
+import { StartComponent } from './welcome/start.component';
+import { TabComponent } from './editor/tab.component';
 
 @RouteConfig([
-    { path: '/start', name: 'Start', component: Start }
+    { path: '/start', name: 'WelcomeStart', component: StartComponent },
+    { path: '/tab/:id', name: 'EditorTab', component: TabComponent }
 ])
 @Component({
     selector: 'f-app',
@@ -16,7 +16,7 @@ console.log(location.href);
     template: `
     <div>
         <nav>
-            <a [routerLink]="['Start']">Start</a>
+            <a [routerLink]="['WelcomeStart']">Start</a>
         </nav>
         <router-outlet></router-outlet>
     </div>
@@ -25,6 +25,6 @@ console.log(location.href);
 export class AppComponent { 
     constructor(private monitorService : MonitorService, private router : Router) {
         monitorService.start();
-        router.navigate(['Start']);
+        router.navigate(['WelcomeStart']);
     }
 }

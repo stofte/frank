@@ -1,7 +1,9 @@
 <html>
     <head>
         <title>Frank</title>
-        <base href="file:///C:/src/frank/shell/app" />
+        <script type="text/javascript">
+            document.write('<base href="file:///' + __dirname.replace(/\\/g, '/') + '/app">'); // wee
+        </script>
         <script>
         // angular2 messed with these symbols, so save them before anything
         // http://electron.atom.io/docs/v0.37.2/faq/electron-faq/
