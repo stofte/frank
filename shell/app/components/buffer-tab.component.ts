@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 
 @Component({
-    selector: 'f-tab'
+    selector: 'f-buffer-tab'
 })
-export class TabComponent {
+export class BufferTabComponent {
     
 }

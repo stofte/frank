@@ -18,33 +18,42 @@ let cleanedUpOmnisharp = false;
 app.on('ready', function() {
     // Create the browser window.
     mainWindow = new BrowserWindow({width: 1100, height: 900, title: 'Frank'});
+    
+    // todo tested using windows ...
+    const mainUrl = 'file://' + __dirname.replace(/\\/g,'/') + '/index.html';
+    const reloadUrl = 'locaton.href = "' + mainUrl + '";';
+    var z = "location.href = \"file:///C:/src/frank/shell/index.html\"";
 
-    var template = [
-        {
+    var template = [{
             label: 'File',
-            submenu: [
-                {
+            submenu: [{
                     label: 'Connections',
                     accelerator: 'ctrl+d',
-                    click: function() {
-                        mainWindow.webContents.send('application-event', 'connections-panel');
-                    }
-                },
-                {
+                    click: () => 
+                        mainWindow.webContents.send('application-event', 'connections-panel'),
+                }, {
                     label: 'Exit',
-                    click: function() {
-                        mainWindow.close();
-                    }
-                }
-            ]
-        }
+                    click: () => 
+                        mainWindow.close(),
+                },
+            ],
+        }, {
+            label: 'Debug',
+            submenu: [{
+                    label: 'Reload',
+                    accelerator: 'ctrl+r',
+                    click: () => 
+                        mainWindow.webContents.executeJavaScript(z),
+                },
+            ],
+        },
     ];
 
     mainWindow.setMenu(Menu.buildFromTemplate(template));
     //mainWindow.maximize();
 
     // and load the index.html of the app.
-    mainWindow.loadURL('file://' + __dirname + '/index.html');
+    mainWindow.loadURL(mainUrl);
 
     // Open the DevTools.
     mainWindow.webContents.openDevTools();
@@ -53,7 +62,7 @@ app.on('ready', function() {
     mainWindow.on('close', function(event) {
         if (!(cleanedUpQueryEngine && cleanedUpOmnisharp)) {
             mainWindow.webContents.send('application-event', 'close');
-            //mainWindow.hide();
+            mainWindow.hide();
             event.preventDefault();
             return false;
         }
