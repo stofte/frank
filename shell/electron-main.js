@@ -19,11 +19,6 @@ app.on('ready', function() {
     // Create the browser window.
     mainWindow = new BrowserWindow({width: 1100, height: 900, title: 'Frank'});
     
-    // todo tested using windows ...
-    const mainUrl = 'file://' + __dirname.replace(/\\/g,'/') + '/index.html';
-    const reloadUrl = 'locaton.href = "' + mainUrl + '";';
-    var z = "location.href = \"file:///C:/src/frank/shell/index.html\"";
-
     var template = [{
             label: 'File',
             submenu: [{
@@ -43,7 +38,7 @@ app.on('ready', function() {
                     label: 'Reload',
                     accelerator: 'ctrl+r',
                     click: () => 
-                        mainWindow.webContents.executeJavaScript(z),
+                        mainWindow.webContents.executeJavaScript("location.reload();"),
                 },
             ],
         },
@@ -53,7 +48,7 @@ app.on('ready', function() {
     //mainWindow.maximize();
 
     // and load the index.html of the app.
-    mainWindow.loadURL(mainUrl);
+    mainWindow.loadURL('file://' + __dirname.replace(/\\/g,'/') + '/index.html');
 
     // Open the DevTools.
     mainWindow.webContents.openDevTools();
