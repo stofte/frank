@@ -10,6 +10,7 @@ import { StartPageComponent } from './components/start-page.component';
 import { BufferTabComponent } from './components/buffer-tab.component';
 import { TabListComponent } from './components/tab-list.component';
 import { ConnectionManagerComponent } from './components/connection-manager.component';
+import { EditorComponent } from './components/editor.component';
 
 @RouteConfig([
     { path: '/start', name: 'StartPage', component: StartPageComponent },
@@ -18,11 +19,12 @@ import { ConnectionManagerComponent } from './components/connection-manager.comp
 ])
 @Component({
     selector: 'f-app',
-    directives: [TabListComponent, ConnectionManagerComponent, ROUTER_DIRECTIVES],
+    directives: [EditorComponent, TabListComponent, ConnectionManagerComponent, ROUTER_DIRECTIVES],
     template: `
 <div class="main-layer {{connectionsVisible ? '' : 'layer-visible'}}">
     <f-tab-list></f-tab-list>
     <router-outlet></router-outlet>
+    <f-editor></f-editor>
 </div>
 <f-connection-manager class="main-layer {{connectionsVisible ? 'layer-visible' : ''}}"></f-connection-manager>
 `

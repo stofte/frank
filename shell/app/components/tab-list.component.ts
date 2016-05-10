@@ -20,7 +20,7 @@ import { TabService } from '../services/tab.service';
                     </a>
                 </li>
                 <li>
-                    <a (click)="newTab()">new</a>
+                    <a (click)="newTab()" href="javascript:void(0)">new</a>
                 </li>
             </ul>
         </div>
