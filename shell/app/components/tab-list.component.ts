@@ -20,7 +20,7 @@ import { TabService } from '../services/tab.service';
                     </a>
                 </li>
                 <li>
-                    <a (click)="newTab()" href="javascript:void(0)">new</a>
+                    <a (click)="newTab()" href="javascript:void(0)"><span class="glyphicon glyphicon-plus"></span></a>
                 </li>
             </ul>
         </div>
@@ -31,6 +31,7 @@ import { TabService } from '../services/tab.service';
 export class TabListComponent {
     constructor(
         private tabService: TabService,
+        
 		private router: Router,
         private location: Location
     ) {

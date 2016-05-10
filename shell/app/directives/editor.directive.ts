@@ -31,7 +31,6 @@ export class EditorDirective {
             let routeId: number = this.current;
             try {
                 routeId = parseInt(route.substring(prefix.length, prefix.length + 1), 10);
-                console.log('editor spotted id', routeId);
             }
             catch (exn) { }
             if (routeId !== this.current) {

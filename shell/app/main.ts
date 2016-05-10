@@ -10,6 +10,7 @@ import { StorageService } from './services/storage.service';
 import { ConnectionService } from './services/connection.service';
 import { TabService } from './services/tab.service';
 import { EditorService } from './services/editor.service';
+import { QueryService } from './services/query.service';
 
 bootstrap(AppComponent, [
     MonitorService,
@@ -18,6 +19,7 @@ bootstrap(AppComponent, [
     ConnectionService,
     TabService,
     EditorService,
+    QueryService,
     HTTP_PROVIDERS,
     ROUTER_PROVIDERS,
     provide(LocationStrategy, { useClass: HashLocationStrategy }),
