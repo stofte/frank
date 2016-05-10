@@ -49,32 +49,32 @@ export class ConnectionManagerComponent {
     
     private addNewConnection(value: string) {
         if (value.length > 0) {
-            this.connectionService.AddNewConnection(new Connection(value));
+            this.connectionService.addNew(new Connection(value));
             this.newConnectionStringText = '';
         }
     }
     
     private editConnection(connection: Connection) {
-        connection.Temporary = connection.ConnectionString;
-        connection.Editing = true;
+        connection.temporary = connection.connectionString;
+        connection.editing = true;
     }
     
     private removeConnection(connection: Connection) {
-        this.connectionService.RemoveConnection(connection);
+        this.connectionService.remove(connection);
     }
     
     private stopEditing(connection: Connection, value: string) {
-        connection.Temporary = value;
+        connection.temporary = value;
     }
     
     private updateEditing(connection: Connection, value: string) {
-        connection.ConnectionString = value;
+        connection.connectionString = value;
         this.cancelEditing(connection);
-        this.connectionService.UpdateConnection(connection);
+        this.connectionService.update(connection);
     }
     
     private cancelEditing(connection: Connection) {
-        connection.Editing = false;
-        connection.Temporary = null;
+        connection.editing = false;
+        connection.temporary = null;
     }
 }

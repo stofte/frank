@@ -10,37 +10,41 @@ export class ConnectionService {
     
     constructor(private storageService: StorageService) {
         this.connections = this.storageService.Load(this.storageKey, []);
-        this.id = this.connections.reduce((prev, curr) => Math.max(prev, curr.Id), 0);
+        this.id = this.connections.reduce((prev, curr) => Math.max(prev, curr.d), 0);
     }
     
-    public get DefaultConnection() : Connection {
+    public get defaultConnection() : Connection {
         if (this.connections.length > 0) {
             return this.connections[0]; // todo
         }
         return null;
     }
     
+    public get(id: number) : Connection {
+        return this.connections.find(x => x.id == id);
+    }
+    
     public get Connections() : Connection[] {
         return this.connections;
     }
     
-    public AddNewConnection(conn: Connection) {
-        conn.Id = this.id++;
+    public addNew(conn: Connection) {
+        conn.id = this.id++;
         this.connections.push(conn);
         this.storageService.Save(this.storageKey, this.connections);
     }
     
-    public RemoveConnection(conn: Connection) {
-        conn.Id = this.id++;
-        this.connections = this.connections.filter(x => x.Id != conn.Id);
+    public remove(conn: Connection) {
+        conn.id = this.id++;
+        this.connections = this.connections.filter(x => x.id != conn.id);
         this.storageService.Save(this.storageKey, this.connections);
     }
     
-    public UpdateConnection(conn: Connection) {
+    public update(conn: Connection) {
         this.connections.find(c => {
-           if (c.Id === conn.Id) {
+           if (c.id === conn.id) {
                console.log('updated conn');
-               c.ConnectionString = conn.ConnectionString;
+               c.connectionString = conn.connectionString;
                this.storageService.Save(this.storageKey, this.connections);
                return true;
            } 

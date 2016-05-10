@@ -11,7 +11,7 @@ export class MonitorService {
         ipc.on('application-event', this.applicationEventHandler.bind(this));
     }
     
-    applicationEventHandler(event : any, msg : string) {
+    private applicationEventHandler(event : any, msg : string) {
         if (msg === 'close') {
             let queryCb = () => ipc.send('application-event', 'close-query-engine');
             let omniCb = () => ipc.send('application-event', 'close-omnisharp');
@@ -39,7 +39,7 @@ export class MonitorService {
             );
     }
     
-    startProcess(cmd : string, options : any) {
+    private startProcess(cmd : string, options : any) {
         console.log('starting process');
         child_process.exec(cmd, options, (error: string, stdout: string, stderr: string) => {
             console.log(`stdout: ${stdout}`);

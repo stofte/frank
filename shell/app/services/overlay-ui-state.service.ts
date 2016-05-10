@@ -1,13 +1,24 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
+
+const ipc = electronRequire('electron').ipcRenderer;
 
 @Injectable()
 export class OverlayUiStateService {
     private visible = false;
     private connections: Subject<boolean> = new Subject<boolean>();
     
-    constructor() {
+    constructor(
+        private ngZone: NgZone
+    ) {
+        ipc.on('application-event', this.applicationEventHandler.bind(this));
+    }
+    
+    private applicationEventHandler(event : any, msg : string) {
+        if (msg === 'connections-panel') {
+            this.ngZone.run(() => this.toggleConnections());
+        }
     }
     
     public toggleConnections() {

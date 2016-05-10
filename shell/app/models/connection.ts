@@ -1,9 +1,9 @@
 export class Connection {
-    public Id : number; 
-    public Editing = false;
-    public ConnectionString : string = null;
-    public Temporary : string;
+    public id : number; 
+    public editing = false;
+    public connectionString : string = null;
+    public temporary : string;
     constructor(connectionString: string) {
-        this.ConnectionString = connectionString;
+        this.connectionString = connectionString;
     }
 }
