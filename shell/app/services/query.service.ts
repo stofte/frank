@@ -1,30 +1,39 @@
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
-import { Observable }     from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
 import 'rxjs/Rx';
 import { union, find, values } from 'lodash';
 import { Connection } from '../models/connection';
 import { QueryResult } from '../models/query-result';
 import { ResultPage } from '../models/result-page';
-
 import config from '../config';
 
 @Injectable()
 export class QueryService {
     private port: number = config.queryEnginePort;
+    private subs: Subject<QueryResult>[] = [];
     constructor(private http : Http) {
     }
     
-    public run(connection: Connection, text: string): Observable<QueryResult> {
+    public run(connection: Connection, text: string)  {
         const json = JSON.stringify({
             connectionString: connection.connectionString,
             text: text
         });
         const result = new QueryResult();
         const f: (value: any, int: number) => QueryResult = this.extractQueryResult.bind(this);
-        return this.http
+        this.http
             .post(this.action('executequery'), json)
-            .map(f);
+            .map(f)
+            .subscribe(result => {
+                console.log('run => ', result, this.subs.length);
+            });
+    }
+    
+    public results(tabId: number): Subject<QueryResult> {
+        let sub = new Subject<QueryResult>();
+        this.subs.push(sub);
+        return null;
     }
     
     private extractQueryResult(res: Response): QueryResult {
@@ -37,7 +46,6 @@ export class QueryService {
         Object.keys(body.Results).forEach(key => {
             const raw = body.Results[key];
             const page = this.transformSet(raw);
-            console.log('forEach', key);
             page.title = key;
             result.pages.push(page);
         });
