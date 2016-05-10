@@ -35,7 +35,6 @@ export class ConnectionService {
     }
     
     public remove(conn: Connection) {
-        conn.id = this.id++;
         this.connections = this.connections.filter(x => x.id != conn.id);
         this.storageService.Save(this.storageKey, this.connections);
     }

@@ -1,5 +1,5 @@
 export class ResultPage {
-    public Title: string;
-    public Rows: any[];
-    public Columns: any[];
+    public title: string;
+    public rows: any[];
+    public columns: any[];
 }
