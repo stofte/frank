@@ -5,12 +5,12 @@ import { Connection } from '../models/connection';
 @Injectable()
 export class ConnectionService {
     private storageKey = 'connectionstrings';
-    private connections : Connection[] = null;
+    public connections : Connection[] = null;
     private id : number = 0;
     
     constructor(private storageService: StorageService) {
         this.connections = this.storageService.Load(this.storageKey, []);
-        this.id = this.connections.reduce((prev, curr) => Math.max(prev, curr.d), 0);
+        this.id = this.connections.reduce((prev, curr) => Math.max(prev, curr.id), 0);
     }
     
     public get defaultConnection() : Connection {

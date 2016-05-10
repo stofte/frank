@@ -8,3 +8,12 @@
     visibility: visible;
   z-index: 1;
 }
+
+
+.editor-tab-list ul li {
+    display: inline-block;
+}
+
+.editor-tab-list ul {
+  clear:both;
+}

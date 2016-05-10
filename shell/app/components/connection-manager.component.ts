@@ -6,7 +6,7 @@ import { Connection } from '../models/connection';
 @Component({
     selector: 'f-connection-manager',
     template: `
-<div>
+<div class="connection-manager">
     <h1>connection manager</h1>
     <p>
         <label>
@@ -16,14 +16,14 @@ import { Connection } from '../models/connection';
         </label>
     </p>
     <ul>
-        <li *ngFor="let connection of connectionService.Connections">
+        <li *ngFor="let connection of connectionService.connections">
             <div *ngIf="!connection.Editing">
-                <label (dblclick)="editConnection(connection)">{{connection.ConnectionString}}</label>
+                <label (dblclick)="editConnection(connection)">{{connection.connectionString}}</label>
                 <button (click)="removeConnection(connection)">remove</button>
             </div>
             <input #editedconn
-                *ngIf="connection.Editing" 
-                [value]="connection.Temporary" 
+                *ngIf="connection.editing" 
+                [value]="connection.temporary" 
                 (blur)="stopEditing(connection, editedconn.value)" 
                 (keyup.enter)="updateEditing(connection, editedconn.value)" 
                 (keyup.escape)="cancelEditing(connection)">

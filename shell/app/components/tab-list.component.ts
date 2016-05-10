@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router, ROUTER_DIRECTIVES } from '@angular/router-deprecated';
+import { Location } from '@angular/common';
 import { Observable } from 'rxjs/Observable';
 import { TabService } from '../services/tab.service';
 
@@ -8,76 +9,35 @@ import { TabService } from '../services/tab.service';
     selector: 'f-tab-list',
     directives: [ROUTER_DIRECTIVES],
     template: `
-<div *ngFor="let route of breadcrumbsCollection">
-    <a [routerLink]="route.linkParams">
-        {{route.linkParams[1].id}}
-    </a>
-    <a (click)="newTab()">
-        new
-    </a>
-</div>
+<ul class="editor-tab-list" *ngIf="tabsEnabled">
+    <li *ngFor="let tab of tabService.tabs">
+		<a [routerLink]="['EditorTab', {id: tab.id, connectionId: tab.connection.id}]">
+			{{tab.id}} / {{tab.connection.id}}
+		</a>
+	</li>
+	<li>
+		<a (click)="newTab()">new</a>
+	</li>
+</ul>
 `
 })
 export class TabListComponent {
-    public breadcrumbsCollection: Array<any>;
-    
     constructor(
         private tabService: TabService,
-        private router: Router
+		private router: Router,
+        private location: Location
     ) {
-		this.router.subscribe(routeUrl => {
-			let instructions : any = [];
-			this.router.recognize(routeUrl).then(instruction => {
-                console.log('instruction', instruction);
-				instructions.push(instruction);
-				
-				while (instruction.child) {
-					instruction = instruction.child;
-					instructions.push(instruction);
-				}
-				
-				let coll : any[] = instructions
-					.map((inst : any, index : any) => {
-                        console.log('map', inst.component);
-						return {
-							displayName: inst.component.routeData.get('displayName'),
-							as: inst.component.routeData.get('name'),
-							terminal: inst.component.terminal,
-							linkParams: this._getLinkParams(instructions, index)
-						}
-					});
-                this.breadcrumbsCollection = coll
-                    .filter(x => x.linkParams[1] && Number.isInteger(x.linkParams[1].id));
-			});
-		});
+        console.log(location.path());
     }
     
-    private _getLinkParams(instructions : any, until : any) {		
-		let linkParams : any = [];
-		instructions.forEach((item : any, index : any) => {
-			let component = item.component;
-			if (index <= until) {
-				linkParams.push(component.routeData.get('name'));
-				if (!this._isEmpty(component.params)) {
-					linkParams.push(component.params);
-				}
-			}
-		});
-		return linkParams;	
-	}
-    
-    private _isEmpty(obj : any) {
-		for(var prop in obj) {
-			if(obj.hasOwnProperty(prop))
-			return false;
-		}
-		return true;		
-	}
-    
     private newTab() {
-        // todo
-        // const connectionId = this.routeParams.get('connectionId');
-        const id = this.tabService.nextId;
-        this.router.navigate(['/EditorTab', { id: id, connectionId: 0 }]);
+		const activeConn = this.tabService.active.connection;
+        const tab = this.tabService.newForeground(activeConn);
+        this.router.navigate(['/EditorTab', { id: tab.id, connectionId: tab.connection.id }]);
+    }
+    
+    private get tabsEnabled(): boolean {
+        // dont show tabs on start page
+        return this.location.path().indexOf('/start') === -1;
     }
 }
