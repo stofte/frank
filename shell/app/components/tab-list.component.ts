@@ -9,16 +9,23 @@ import { TabService } from '../services/tab.service';
     selector: 'f-tab-list',
     directives: [ROUTER_DIRECTIVES],
     template: `
-<ul class="editor-tab-list" *ngIf="tabsEnabled">
-    <li *ngFor="let tab of tabService.tabs">
-		<a [routerLink]="['EditorTab', {id: tab.id, connectionId: tab.connection.id}]">
-			{{tab.id}} / {{tab.connection.id}}
-		</a>
-	</li>
-	<li>
-		<a (click)="newTab()">new</a>
-	</li>
-</ul>
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid" *ngIf="tabsEnabled">
+        <div class="navbar-header">
+            <ul class="nav navbar-nav">
+                <li *ngFor="let tab of tabService.tabs"
+                     class="{{tabService.active.id === tab.id ? 'active' : ''}}">
+                    <a [routerLink]="['EditorTab', {id: tab.id, connectionId: tab.connection.id}]">
+                        Edit {{tab.id}}
+                    </a>
+                </li>
+                <li>
+                    <a (click)="newTab()">new</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
 `
 })
 export class TabListComponent {

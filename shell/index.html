@@ -1,6 +1,8 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
     <head>
         <title>Frank</title>
+        <meta charset="utf-8">
         <script type="text/javascript">
             document.write('<base href="file://' + __dirname.replace(/\\/g, '/') + '/index.html">'); // wee
         </script>
@@ -12,10 +14,10 @@
         delete window.exports;
         delete window.module;
         </script>
-        <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="node_modules/normalizecss/normalize.css">
         <link rel="stylesheet" href="styles.css">
-        <link rel="stylesheet" href="custom.css">
+        <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
         <script src="node_modules/es6-shim/es6-shim.min.js"></script>
         <script src="node_modules/zone.js/dist/zone.js"></script>
         <script src="node_modules/reflect-metadata/Reflect.js"></script>
@@ -25,8 +27,9 @@
             System.import('app').catch(function(err){ console.error(err);  });
         </script>
     </head>
-
     <body>
-        <f-app>Loading...</f-app>    
+        <f-app>
+            <p>Loading</p>
+        </f-app>
     </body>
 </html>

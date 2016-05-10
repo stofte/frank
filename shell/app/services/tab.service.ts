@@ -47,6 +47,12 @@ export class TabService {
         return this.tabs.find(x => x.active);
     }
     
+    public routedTo(id: number): void {
+        this.tabs.forEach(t => {
+            t.active = t.id === id;
+        });
+    }
+    
     private goto(tab: Tab): void {
         this.router.navigate(["EditorTab", { id: tab.id, connectionId: tab.connection.id }]);
     }

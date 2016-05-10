@@ -20,15 +20,11 @@ import { ConnectionManagerComponent } from './components/connection-manager.comp
     selector: 'f-app',
     directives: [TabListComponent, ConnectionManagerComponent, ROUTER_DIRECTIVES],
     template: `
-    <div>
-        <f-connection-manager class="main-layer {{connectionsVisible ? 'layer-visible' : ''}}"></f-connection-manager>
-        <div class="main-layer {{connectionsVisible ? '' : 'layer-visible'}}">
-            <nav>
-                <f-tab-list></f-tab-list>
-            </nav>
-            <router-outlet></router-outlet>
-        </div>
-    </div>
+<div class="main-layer {{connectionsVisible ? '' : 'layer-visible'}}">
+    <f-tab-list></f-tab-list>
+    <router-outlet></router-outlet>
+</div>
+<f-connection-manager class="main-layer {{connectionsVisible ? 'layer-visible' : ''}}"></f-connection-manager>
 `
 })
 export class AppComponent {
