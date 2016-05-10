@@ -13,3 +13,7 @@ body {
   /* align using 51px */
   padding-top: 64px;
 }
+
+.CodeMirror {
+    height: auto;
+}

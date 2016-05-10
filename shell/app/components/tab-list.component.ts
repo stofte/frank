@@ -34,7 +34,6 @@ export class TabListComponent {
 		private router: Router,
         private location: Location
     ) {
-        console.log(location.path());
     }
     
     private newTab() {

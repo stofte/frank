@@ -9,6 +9,7 @@ import { OverlayUiStateService } from './services/overlay-ui-state.service';
 import { StorageService } from './services/storage.service';
 import { ConnectionService } from './services/connection.service';
 import { TabService } from './services/tab.service';
+import { EditorService } from './services/editor.service';
 
 bootstrap(AppComponent, [
     MonitorService,
@@ -16,6 +17,7 @@ bootstrap(AppComponent, [
     StorageService,
     ConnectionService,
     TabService,
+    EditorService,
     HTTP_PROVIDERS,
     ROUTER_PROVIDERS,
     provide(LocationStrategy, { useClass: HashLocationStrategy }),

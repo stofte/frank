@@ -48,10 +48,8 @@ export class AppComponent {
             // check if there are any open tabs ...
             var tab = tabService.active;
             if (!tab) {
-                console.log('no previous session, open new tab using default connection');
                 tab = this.tabService.newForeground(connection);    
             }
-            router.navigate(['EditorTab', { id: tab.id, connectionId: tab.connection.id }]);
         }
         
         // setup subs for toggle between overlays
