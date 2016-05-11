@@ -9,7 +9,8 @@
         'ng2-bootstrap': 'node_modules/ng2-bootstrap',
         'moment': 'node_modules/moment',
         'codemirror': 'node_modules/codemirror',
-        'lodash': 'node_modules/lodash'
+        'lodash': 'node_modules/lodash',
+        'node-uuid': 'node_modules/node-uuid',
     };
 
     // packages tells the System loader how to load when no filename and/or no extension
@@ -21,6 +22,7 @@
         'moment': { main: 'moment.js', defaultExtension: 'js' },
         'codemirror': { main: 'lib/codemirror.js', defaultExtension: 'js' },
         'lodash': { main: 'lodash.js', defaultExtension: 'js' },
+        'node-uuid': { main: 'uuid.js', defaultExtension: 'js' },
     };
 
     var packageNames = [

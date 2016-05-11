@@ -5,7 +5,7 @@ namespace QueryEngine.Services
     using System.Collections.Generic;
     using System.Reflection;
     using QueryEngine.Models;
-
+    using System.Text.RegularExpressions;
     public class QueryService
     {
         CompileService _compiler;
@@ -48,12 +48,20 @@ namespace QueryEngine.Services
         {
             var assmName = Guid.NewGuid().ToIdentifierWithPrefix("a");
             var schemaSrc = _schemaService.GetSchemaSource(input.ConnectionString, assmName, withUsings: false);
+            
             var src = _template
                 .Replace("##NS##", assmName)
                 .Replace("##DB##", "Proxy");
+            var regex = new Regex(@"$", RegexOptions.Multiline);
+            var srcOffset = src.Substring(0, src.IndexOf("##SOURCE##"));
+            var ms = regex.Matches(srcOffset);
+            Console.WriteLine("regex matches", ms.Count);
+            // the usage of the template should not require mapping the column value
             return new TemplateResult {
                 Template = src + schemaSrc,
-                Namespace = assmName
+                Namespace = assmName,
+                ColumnOffset = 0,
+                LineOffset = ms.Count - 1
             };
         }
 

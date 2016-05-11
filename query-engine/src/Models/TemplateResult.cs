@@ -7,5 +7,9 @@ namespace QueryEngine.Models
     {
         public string Namespace { get; set; }
         public string Template { get; set; }
+        
+        public int ColumnOffset { get; set; }
+        
+        public int LineOffset { get; set; }
     }
 }

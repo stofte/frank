@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router-deprecated';
+import { OmnisharpService } from '../services/omnisharp.service';
 import { Connection } from '../models/connection';
 import { Tab } from '../models/tab';
 
@@ -9,7 +10,8 @@ export class TabService {
     public tabs: Tab[] = [];
     
     constructor(
-        private router: Router
+        private router: Router,
+        private omnisharpService: OmnisharpService
     ) {
         
     }
@@ -19,6 +21,8 @@ export class TabService {
         tab.id = this.id++;
         tab.output = 'console';
         tab.connection = connection == null ? this.tabs.find(x => x.active).connection : connection;
+        tab.fileName = this.omnisharpService.randomFile(tab.id);
+        this.omnisharpService.initializeTab(tab);
         this.tabs.forEach(t => t.active = false);
         tab.active = true;
         this.tabs.push(tab);
@@ -45,6 +49,10 @@ export class TabService {
             }
             return false;
         });
+    }
+    
+    public get(id: number) {
+        return this.tabs.find(x => x.id === id); 
     }
     
     public get active(): Tab {

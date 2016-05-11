@@ -1,15 +1,17 @@
 import { Directive, ElementRef, Renderer, OnInit } from '@angular/core';
 import { Router, RouteParams } from '@angular/router-deprecated';
+
 import { EditorService } from '../services/editor.service';
+import { TabService } from '../services/tab.service';
+import { OmnisharpService } from '../services/omnisharp.service';
+import { AutocompletionQuery } from '../models/autocompletion-query';
+import { AutocompletionResult } from '../models/autocompletion-result';
+
 import 'codemirror/addon/hint/show-hint';
 import * as CodeMirror from 'codemirror';
 
-CodeMirror.registerHelper('hint', 'ajax', (mirror, callback) => {
-    callback({
-        list: ["foo", "bar"]
-    }); 
-});
-CodeMirror.hint.ajax.async = true;
+let onetimeBullshit = false;
+
 CodeMirror.commands.autocomplete = function(cm) {
     cm.showHint({ hint: CodeMirror.hint.ajax });
 };
@@ -26,13 +28,35 @@ export class EditorDirective implements OnInit {
     editor: any;
     constructor(
         private editorService: EditorService,
+        private omnisharpService: OmnisharpService,
+        private tabService: TabService,
         private route: Router,
         private routeParams: RouteParams,
         public element: ElementRef, 
         public renderer: Renderer
     ){
-        this.editor = CodeMirror.fromTextArea(element.nativeElement, this.editorOptions());
         this.current = parseInt(routeParams.get('tab'), 10);
+        // need the service injected, even if this should be static
+        if (!onetimeBullshit) {
+            onetimeBullshit = true;
+            CodeMirror.registerHelper('hint', 'ajax', (mirror, callback) => {
+                let tab = this.tabService.get(mirror._tab);
+                let cur = mirror.getCursor();
+                let range = mirror.findWordAt(cur);
+                let fragment = mirror.getRange(range.anchor, range.head);
+                let request = new AutocompletionQuery();
+                request.fileName = tab.fileName;
+                request.column = 4;
+                request.line = 1;
+                omnisharpService
+                    .autocomplete(mirror._tabId, request)
+                    .subscribe(callback);
+            });
+            CodeMirror.hint.ajax.async = true;
+            
+        }
+        this.editor = CodeMirror.fromTextArea(element.nativeElement, this.editorOptions());
+        this.editor._tab = this.current;
         const contents = editorService.get(this.current);
         this.editor.setValue(contents);
         const domElm = this.editor.getWrapperElement();
@@ -46,10 +70,10 @@ export class EditorDirective implements OnInit {
     }
     
     ngOnInit() {
-        
-        
         this.editor.refresh();
     }
+    
+    
     
     private editorOptions() {
         return {

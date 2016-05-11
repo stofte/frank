@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Router } from '@angular/router-deprecated';
-import { Subject } from 'rxjs/Subject';
+import { Subject, Observable } from 'rxjs/Rx';
 import 'rxjs/Rx';
 import { union, find, values } from 'lodash';
 import { Connection } from '../models/connection';
 import { QueryResult } from '../models/query-result';
+import { TemplateResult } from '../models/template-result';
 import { ResultPage } from '../models/result-page';
 import config from '../config';
 
@@ -39,6 +40,22 @@ export class QueryService {
             .subscribe(result => {
                 this.data[k].push(result);
                 this.subs[k].next(result);
+            });
+    }
+    
+    public queryTemplate(connection: Connection): Observable<TemplateResult> {
+        let data = {
+            connectionString: connection.connectionString,
+            text: ''  
+        };
+        return this.http
+            .post(this.action('querytemplate'), JSON.stringify(data))
+            .map(res => res.json())
+            .map(json => {
+                let m = new TemplateResult();
+                m.namespace = json.Namespace;
+                m.template = json.Template;
+                return m;
             });
     }
     
