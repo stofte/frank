@@ -15,7 +15,7 @@ import { TabService } from '../services/tab.service';
             <ul class="nav navbar-nav">
                 <li *ngFor="let tab of tabService.tabs"
                      class="{{tabService.active.id === tab.id ? 'active' : ''}}">
-                    <a [routerLink]="['EditorTab', {id: tab.id, connectionId: tab.connection.id}]">
+                    <a [routerLink]="['EditorTab', {tab: tab.id, connection: tab.connection.id, output: tab.output }]">
                         Edit {{tab.id}}
                     </a>
                 </li>

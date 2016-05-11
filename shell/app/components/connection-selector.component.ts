@@ -35,8 +35,8 @@ export class ConnectionSelectorComponent {
         private router: Router,
         private routeParams: RouteParams
     ) {
-        this.tabId = parseInt(routeParams.get('id'), 10);
-        this.connId = parseInt(routeParams.get('connectionId'), 10);
+        this.tabId = parseInt(routeParams.get('tab'), 10);
+        this.connId = parseInt(routeParams.get('connection'), 10);
     }
     
     private select(conn: Connection) {

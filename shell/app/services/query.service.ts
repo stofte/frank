@@ -8,14 +8,19 @@ import { QueryResult } from '../models/query-result';
 import { ResultPage } from '../models/result-page';
 import config from '../config';
 
+class SubscriberMap {
+    
+}
+
 @Injectable()
 export class QueryService {
     private port: number = config.queryEnginePort;
-    private subs: Subject<QueryResult>[] = [];
+    private subs: any = {};
+    private data: any = {};
     constructor(private http : Http) {
     }
     
-    public run(connection: Connection, text: string)  {
+    public run(tabId: number, connection: Connection, text: string)  {
         const json = JSON.stringify({
             connectionString: connection.connectionString,
             text: text
@@ -26,14 +31,23 @@ export class QueryService {
             .post(this.action('executequery'), json)
             .map(f)
             .subscribe(result => {
-                console.log('run => ', result, this.subs.length);
+                let k ='_p_' + tabId; 
+                if (!this.data[k]) {
+                    this.data[k] = [];
+                }
+                this.data[k].push(result);
+                this.subs[k].next(result);
             });
+    }
+    
+    public loaded(tabId: number): QueryResult[] {
+        return this.data['_p_' + tabId] || [];
     }
     
     public results(tabId: number): Subject<QueryResult> {
         let sub = new Subject<QueryResult>();
-        this.subs.push(sub);
-        return null;
+        this.subs['_p_' + tabId] = sub;
+        return sub;
     }
     
     private extractQueryResult(res: Response): QueryResult {

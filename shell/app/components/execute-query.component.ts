@@ -26,13 +26,11 @@ export class ExecuteQueryComponent {
     }
     
     private run(): void {
-        const id = parseInt(this.routeParams.get('id'), 10);
-        const connId = parseInt(this.routeParams.get('connectionId'), 10);
+        console.log('execute', this.routeParams.get('tab'), this.routeParams.get('connection'))
+        const id = parseInt(this.routeParams.get('tab'), 10);
+        const connId = parseInt(this.routeParams.get('connection'), 10);
         const conn = this.connectionService.get(connId);
         const query = this.editorService.get(id);
-        this.queryService.run(conn, query)
-            .subscribe(result => {
-                console.log('query', query, ', using', conn.connectionString, '=>', result);
-            });
+        this.queryService.run(id, conn, query);
     }
 }

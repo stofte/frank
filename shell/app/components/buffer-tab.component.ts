@@ -4,10 +4,12 @@ import { ConnectionService } from '../services/connection.service';
 import { TabService } from '../services/tab.service';
 import { ConnectionSelectorComponent } from './connection-selector.component';
 import { ExecuteQueryComponent } from './execute-query.component';
+import { OutputComponent } from './output.component'
+import { EditorDirective } from '../directives/editor.directive';
 
 @Component({
     selector: 'f-buffer-tab',
-    directives: [ExecuteQueryComponent, ConnectionSelectorComponent],
+    directives: [OutputComponent, EditorDirective, ExecuteQueryComponent, ConnectionSelectorComponent],
     template: `
 <div class="container-fluid">
     <div class="row">
@@ -18,6 +20,12 @@ import { ExecuteQueryComponent } from './execute-query.component';
             <p><f-connection-selector></f-connection-selector></p>
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-12">
+            <p><textarea editor></textarea></p>
+        </div>
+    </div>
+    <f-output></f-output>
 </div>
 `
 })
@@ -31,7 +39,7 @@ export class BufferTabComponent {
     }
     
     routerOnActivate() {
-        const id = parseInt(this.routeParams.get('id'), 10);
+        const id = parseInt(this.routeParams.get('tab'), 10);
         this.tabService.routedTo(id);
     }
 }

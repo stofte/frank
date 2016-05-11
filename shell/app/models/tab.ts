@@ -5,4 +5,5 @@ export class Tab {
     public connection: Connection;
     public title: string;
     public active: boolean;
+    public output: any;
 }

@@ -1,5 +1,5 @@
 import { provide, Component } from '@angular/core';
-import { RouteConfig, Router, ROUTER_DIRECTIVES } from '@angular/router-deprecated';
+import { RouteConfig, Router, ROUTER_DIRECTIVES, AuxRoute } from '@angular/router-deprecated';
 
 import { MonitorService } from './services/monitor.service';
 import { ConnectionService } from './services/connection.service';
@@ -10,21 +10,27 @@ import { StartPageComponent } from './components/start-page.component';
 import { BufferTabComponent } from './components/buffer-tab.component';
 import { TabListComponent } from './components/tab-list.component';
 import { ConnectionManagerComponent } from './components/connection-manager.component';
-import { EditorComponent } from './components/editor.component';
+import { OutputComponent } from './components/output.component';
+
+
+@Component({
+    selector: 'chat',
+    template: `<h1>Chat Component</h1>`
+})
+export class ChatComponent {}
 
 @RouteConfig([
-    { path: '/start', name: 'StartPage', component: StartPageComponent },
-    { path: '/guide', name: 'GuidePage', component: StartPageComponent },
-    { path: '/tab/:id/:connectionId', name: 'EditorTab', component: BufferTabComponent }
+    { path: '/start', as: 'StartPage', component: StartPageComponent, useAsDefault: true },
+    { path: '/guide', as: 'GuidePage', component: StartPageComponent },
+    { path: '/tab/:tab/:connection/:output', as: 'EditorTab', component: BufferTabComponent }
 ])
 @Component({
     selector: 'f-app',
-    directives: [EditorComponent, TabListComponent, ConnectionManagerComponent, ROUTER_DIRECTIVES],
+    directives: [TabListComponent, ConnectionManagerComponent, ROUTER_DIRECTIVES],
     template: `
 <div class="main-layer {{connectionsVisible ? '' : 'layer-visible'}}">
     <f-tab-list></f-tab-list>
     <router-outlet></router-outlet>
-    <f-editor></f-editor>
 </div>
 <f-connection-manager class="main-layer {{connectionsVisible ? 'layer-visible' : ''}}"></f-connection-manager>
 `

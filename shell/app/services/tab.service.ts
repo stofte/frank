@@ -17,6 +17,7 @@ export class TabService {
     public newForeground(connection: Connection, navigate: boolean = true): Tab {
         var tab = new Tab();
         tab.id = this.id++;
+        tab.output = 'console';
         tab.connection = connection == null ? this.tabs.find(x => x.active).connection : connection;
         this.tabs.forEach(t => t.active = false);
         tab.active = true;
@@ -54,6 +55,6 @@ export class TabService {
     }
     
     private goto(tab: Tab): void {
-        this.router.navigate(["EditorTab", { id: tab.id, connectionId: tab.connection.id }]);
+        this.router.navigate(["EditorTab", { tab: tab.id, connection: tab.connection.id, output: tab.output }]);
     }
 }
