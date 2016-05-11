@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
+import { Router } from '@angular/router-deprecated';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/Rx';
 import { union, find, values } from 'lodash';
@@ -17,7 +18,10 @@ export class QueryService {
     private port: number = config.queryEnginePort;
     private subs: any = {};
     private data: any = {};
-    constructor(private http : Http) {
+    constructor(
+        private http : Http,
+        private router: Router
+    ) {
     }
     
     public run(tabId: number, connection: Connection, text: string)  {
@@ -27,14 +31,12 @@ export class QueryService {
         });
         const result = new QueryResult();
         const f: (value: any, int: number) => QueryResult = this.extractQueryResult.bind(this);
+        let k ='_p_' + tabId;
+        this.data[k] = []; // dump any previous results
         this.http
             .post(this.action('executequery'), json)
             .map(f)
             .subscribe(result => {
-                let k ='_p_' + tabId; 
-                if (!this.data[k]) {
-                    this.data[k] = [];
-                }
                 this.data[k].push(result);
                 this.subs[k].next(result);
             });

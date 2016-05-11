@@ -30,13 +30,16 @@ export class TabService {
     
     public updateTabId(tabId: number, connection: Connection, navigate: boolean = true): void{
         const tab = this.tabs.find(t => t.id === tabId);
-        this.updateTab(tab, connection, navigate);
+        tab.connection = connection;
+        this.updateTab(tab, navigate);
     }
     
-    public updateTab(tab: Tab, connection: Connection, navigate: boolean = true): void{
+    public updateTab(tab: Tab, navigate: boolean = true): void{
         this.tabs.find(t => {
             if (t.id === tab.id) {
-                t.connection = connection;
+                t.connection = tab.connection;
+                t.output = tab.output 
+                t.title = tab.title;
                 this.goto(tab);
                 return true;
             }

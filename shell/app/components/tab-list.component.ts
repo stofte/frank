@@ -4,7 +4,6 @@ import { Location } from '@angular/common';
 import { Observable } from 'rxjs/Observable';
 import { TabService } from '../services/tab.service';
 
-// https://github.com/angular/angular/issues/5318#issuecomment-157474890
 @Component({
     selector: 'f-tab-list',
     directives: [ROUTER_DIRECTIVES],
@@ -15,8 +14,8 @@ import { TabService } from '../services/tab.service';
             <ul class="nav navbar-nav">
                 <li *ngFor="let tab of tabService.tabs"
                      class="{{tabService.active.id === tab.id ? 'active' : ''}}">
-                    <a [routerLink]="['EditorTab', {tab: tab.id, connection: tab.connection.id, output: tab.output }]">
-                        Edit {{tab.id}}
+                    <a [routerLink]="['EditorTab', {tab: tab.id, connection: tab.connection.id, output: 'tab.output' }]">
+                        Edit {{tab.title}}
                     </a>
                 </li>
                 <li>
@@ -40,7 +39,7 @@ export class TabListComponent {
     private newTab() {
 		const activeConn = this.tabService.active.connection;
         const tab = this.tabService.newForeground(activeConn);
-        this.router.navigate(['/EditorTab', { id: tab.id, connectionId: tab.connection.id }]);
+        this.router.navigate(['/EditorTab', { tab: tab.id, connection: tab.connection.id, output: 'console' }]);
     }
     
     private get tabsEnabled(): boolean {
