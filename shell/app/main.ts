@@ -11,6 +11,7 @@ import { ConnectionService } from './services/connection.service';
 import { TabService } from './services/tab.service';
 import { EditorService } from './services/editor.service';
 import { QueryService } from './services/query.service';
+import { OmnisharpService } from './services/omnisharp.service';
 
 bootstrap(AppComponent, [
     MonitorService,
@@ -20,6 +21,7 @@ bootstrap(AppComponent, [
     TabService,
     EditorService,
     QueryService,
+    OmnisharpService,
     HTTP_PROVIDERS,
     ROUTER_PROVIDERS,
     provide(LocationStrategy, { useClass: HashLocationStrategy }),

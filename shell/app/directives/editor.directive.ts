@@ -1,7 +1,21 @@
 import { Directive, ElementRef, Renderer, OnInit } from '@angular/core';
 import { Router, RouteParams } from '@angular/router-deprecated';
 import { EditorService } from '../services/editor.service';
-import * as cm from 'codemirror';
+import 'codemirror/addon/hint/show-hint';
+import * as CodeMirror from 'codemirror';
+
+CodeMirror.registerHelper('hint', 'ajax', (mirror, callback) => {
+    callback({
+        list: ["foo", "bar"]
+    }); 
+});
+CodeMirror.hint.ajax.async = true;
+CodeMirror.commands.autocomplete = function(cm) {
+    cm.showHint({ hint: CodeMirror.hint.ajax });
+};
+
+var mac = CodeMirror.keyMap.default == CodeMirror.keyMap.macDefault;
+CodeMirror.keyMap.default[(mac ? "Cmd" : "Ctrl") + "-Space"] = "autocomplete";
 
 @Directive({
     selector: '[editor]'
@@ -17,10 +31,7 @@ export class EditorDirective implements OnInit {
         public element: ElementRef, 
         public renderer: Renderer
     ){
-        this.editor = cm.fromTextArea(element.nativeElement, {
-            lineNumbers: false,
-            viewportMargin: Infinity
-        });
+        this.editor = CodeMirror.fromTextArea(element.nativeElement, this.editorOptions());
         this.current = parseInt(routeParams.get('tab'), 10);
         const contents = editorService.get(this.current);
         this.editor.setValue(contents);
@@ -35,6 +46,18 @@ export class EditorDirective implements OnInit {
     }
     
     ngOnInit() {
+        
+        
         this.editor.refresh();
+    }
+    
+    private editorOptions() {
+        return {
+            lineNumbers: false,
+            matchBrackets: true,
+            viewportMargin: Infinity,
+            showCursorWhenSelecting: true,
+            mode: 'text/x-csharp'
+        }
     }
 }
