@@ -52,21 +52,29 @@ namespace QueryEngine.Services
             var src = _template
                 .Replace("##NS##", assmName)
                 .Replace("##DB##", "Proxy");
+                
+            var srcToken = "##SOURCE##";
             var regex = new Regex(@"$", RegexOptions.Multiline);
-            var srcOffset = src.Substring(0, src.IndexOf("##SOURCE##"));
+            var srcIdx = src.IndexOf(srcToken);
+            var srcOffset = src.Substring(0, srcIdx);
             var ms = regex.Matches(srcOffset);
+            src = src + schemaSrc;
+            var fullSrc = src.Replace(srcToken, "");
+            var header = src.Substring(0, srcIdx);
+            var footer = src.Substring(srcIdx + srcToken.Length);
             Console.WriteLine("regex matches", ms.Count);
             // the usage of the template should not require mapping the column value
             return new TemplateResult {
-                Template = src + schemaSrc,
+                Template = fullSrc,
+                Header = header,
+                Footer = footer,
                 Namespace = assmName,
                 ColumnOffset = 0,
-                LineOffset = ms.Count - 1
+                LineOffset = ms.Count // todo magic bullshit
             };
         }
 
-        string _template = @"
-using System;
+        string _template = @"using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;

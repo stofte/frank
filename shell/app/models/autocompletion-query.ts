@@ -7,4 +7,5 @@ export class AutocompletionQuery {
     public wantDocumentationForEveryCompletionResult: boolean;
     public wantReturnType: boolean;
     public wantKind: boolean;
+    public wordToComplete: string;
 }

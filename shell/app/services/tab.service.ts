@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router-deprecated';
 import { OmnisharpService } from '../services/omnisharp.service';
+import { QueryService } from '../services/query.service';
 import { Connection } from '../models/connection';
 import { Tab } from '../models/tab';
 
@@ -11,13 +12,22 @@ export class TabService {
     
     constructor(
         private router: Router,
-        private omnisharpService: OmnisharpService
+        private omnisharpService: OmnisharpService,
+        private queryService: QueryService
     ) {
         
     }
     
-    public newForeground(connection: Connection, navigate: boolean = true): Tab {
+    public newForeground(connection: Connection, navigate: boolean = true) {
         var tab = new Tab();
+        this.queryService
+            .queryTemplate(connection)
+            .subscribe(template => {
+                // set template when possible
+                tab.templateLineOffset = template.lineOffset;
+                tab.templateHeader = template.header;
+                tab.templateFooter = template.footer;                
+            });
         tab.id = this.id++;
         tab.output = 'console';
         tab.connection = connection == null ? this.tabs.find(x => x.active).connection : connection;
@@ -28,8 +38,7 @@ export class TabService {
         this.tabs.push(tab);
         if (navigate) {
             this.goto(tab);
-        }
-        return tab;
+        }       
     }
     
     public updateTabId(tabId: number, connection: Connection, navigate: boolean = true): void{
@@ -52,6 +61,7 @@ export class TabService {
     }
     
     public get(id: number) {
+        console.log('tabservice.get', this.tabs);
         return this.tabs.find(x => x.id === id); 
     }
     
@@ -66,6 +76,7 @@ export class TabService {
     }
     
     private goto(tab: Tab): void {
+        console.log('goto', tab.id);
         this.router.navigate(["EditorTab", { tab: tab.id, connection: tab.connection.id, output: tab.output }]);
     }
 }

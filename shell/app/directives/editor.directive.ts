@@ -6,6 +6,7 @@ import { TabService } from '../services/tab.service';
 import { OmnisharpService } from '../services/omnisharp.service';
 import { AutocompletionQuery } from '../models/autocompletion-query';
 import { AutocompletionResult } from '../models/autocompletion-result';
+import { Tab } from '../models/tab';
 
 import 'codemirror/addon/hint/show-hint';
 import * as CodeMirror from 'codemirror';
@@ -23,7 +24,7 @@ CodeMirror.keyMap.default[(mac ? "Cmd" : "Ctrl") + "-Space"] = "autocomplete";
     selector: '[editor]'
 })
 export class EditorDirective implements OnInit {
-    private current: number = null;
+    private current: Tab = null;
     private textContent: string = null;
     editor: any;
     constructor(
@@ -35,25 +36,38 @@ export class EditorDirective implements OnInit {
         public element: ElementRef, 
         public renderer: Renderer
     ){
-        this.current = parseInt(routeParams.get('tab'), 10);
+        const tabId = parseInt(routeParams.get('tab'), 10);
+        console.log('tabId', tabId, '=>', tabService.get(tabId));
+        this.current = tabService.get(tabId);
         // need the service injected, even if this should be static
         if (!onetimeBullshit) {
             onetimeBullshit = true;
             CodeMirror.registerHelper('hint', 'ajax', (mirror, callback) => {
-                let tab = this.tabService.get(mirror._tab);
+                let tab = mirror._tab;
                 let cur = mirror.getCursor();
                 let range = mirror.findWordAt(cur);
                 let fragment = mirror.getRange(range.anchor, range.head);
                 let request = new AutocompletionQuery();
-                request.fileName = tab.fileName;
-                request.column = 4;
-                request.line = 1;
+                request.fileName = mirror._tab.fileName;
+                request.column = cur.ch + 1;
+                request.line = cur.line + tab.templateLineOffset;
+                request.buffer = tab.templateHeader + mirror.getValue() + tab.templateFooter;
+                console.log('fragment', fragment);
                 omnisharpService
-                    .autocomplete(mirror._tabId, request)
-                    .subscribe(callback);
+                    .autocomplete(request)
+                    .subscribe(list => {
+                        console.log('list', list);
+                        if (fragment === '.') {
+                            range.anchor.ch = range.head.ch;
+                        }
+                        callback({
+                            list,
+                            from: range.anchor,
+                            to: range.head
+                        });
+                    });
             });
             CodeMirror.hint.ajax.async = true;
-            
         }
         this.editor = CodeMirror.fromTextArea(element.nativeElement, this.editorOptions());
         this.editor._tab = this.current;
@@ -72,8 +86,6 @@ export class EditorDirective implements OnInit {
     ngOnInit() {
         this.editor.refresh();
     }
-    
-    
     
     private editorOptions() {
         return {

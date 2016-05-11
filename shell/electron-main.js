@@ -39,6 +39,11 @@ app.on('ready', function() {
                     accelerator: 'ctrl+r',
                     click: () => 
                         mainWindow.webContents.executeJavaScript("location.reload();"),
+                },{
+                    label: 'DevTools',
+                    accelerator: 'ctrl+shift-i',
+                    click: () => 
+                        mainWindow.webContents.openDevTools()
                 },
             ],
         },

@@ -38,8 +38,7 @@ export class TabListComponent {
     
     private newTab() {
 		const activeConn = this.tabService.active.connection;
-        const tab = this.tabService.newForeground(activeConn);
-        this.router.navigate(['/EditorTab', { tab: tab.id, connection: tab.connection.id, output: 'console' }]);
+        this.tabService.newForeground(activeConn);
     }
     
     private get tabsEnabled(): boolean {

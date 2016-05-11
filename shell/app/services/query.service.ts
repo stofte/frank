@@ -19,6 +19,7 @@ export class QueryService {
     private port: number = config.queryEnginePort;
     private subs: any = {};
     private data: any = {};
+    private cachedTemplate = {};
     constructor(
         private http : Http,
         private router: Router
@@ -44,6 +45,12 @@ export class QueryService {
     }
     
     public queryTemplate(connection: Connection): Observable<TemplateResult> {
+        if (this.cachedTemplate[connection.id]) {
+            return new Observable<TemplateResult>(obs => {
+                obs.next(this.cachedTemplate[connection.id]);
+                obs.completed();
+            });
+        }
         let data = {
             connectionString: connection.connectionString,
             text: ''  
@@ -55,6 +62,9 @@ export class QueryService {
                 let m = new TemplateResult();
                 m.namespace = json.Namespace;
                 m.template = json.Template;
+                m.header = json.Header;
+                m.footer = json.Footer;
+                m.lineOffset = json.LineOffset;
                 return m;
             });
     }

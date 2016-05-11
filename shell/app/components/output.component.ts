@@ -71,6 +71,7 @@ export class OutputComponent {
         private routeParams: RouteParams
     ) {
         this.tabId = parseInt(routeParams.get('tab'), 10);
+        console.log('output.tabId', this.tabId);
         this.connectionId = parseInt(routeParams.get('connection'), 10);
         this.outputParam = this.routeParams.get('output');
         this.consoleVisible = this.outputParam === 'console';

@@ -1,7 +1,6 @@
-import { Tab } from './tab';
 
 export class EditorChange {
-    public tab: Tab;
+    public fileName: string;
     public newText: string;
     public startLine: number;
     public startColumn: number;

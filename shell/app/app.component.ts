@@ -52,9 +52,8 @@ export class AppComponent {
             router.navigate(['StartPage']);
         } else {
             // check if there are any open tabs ...
-            var tab = tabService.active;
-            if (!tab) {
-                tab = this.tabService.newForeground(connection);    
+            if (!tabService.active) {
+                this.tabService.newForeground(connection);    
             }
         }
         
