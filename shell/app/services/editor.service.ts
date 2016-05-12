@@ -13,12 +13,10 @@ export class EditorService {
     }
     
     public get(tab: Tab): string {
-        console.log('EditorService.get', tab.id, this.buffers[tab.id]);
         return this.buffers[tab.id] || '\n\n';
     }
     
     public set(tab: Tab, text: string) {
-        console.log('EditorService.set(text)',  tab.id, '>' + text + '<');
         let change = new EditorChange();
         change.startColumn = 1;
         change.startLine = 1;

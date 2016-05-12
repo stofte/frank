@@ -117,7 +117,7 @@ export class OmnisharpService {
             .groupBy(r => r.CompletionText)
             .map(nameList => {
                 // filter out duplicates of the same name and type
-                    let byType = _.reduce(nameList, (saved, item) => {
+                    let byType = _.reduce(nameList, (saved, item: any) => {
                         if (!_.includes(saved, i => i.Kind !== item.Kind)) {
                             saved.push(item);
                         }
@@ -127,7 +127,7 @@ export class OmnisharpService {
                     return res;
             })
             .flatten()
-            .map(i => {
+            .map((i: any) => {
                 return {
                     text: i.CompletionText,
                     className: `foo`

@@ -8,9 +8,9 @@ import { AutocompletionQuery } from '../models/autocompletion-query';
 import { AutocompletionResult } from '../models/autocompletion-result';
 import { Tab } from '../models/tab';
 
-import 'codemirror/addon/hint/show-hint';
-import * as CodeMirror from 'codemirror';
 
+import * as CodeMirror from 'codemirror';
+import 'codemirror/addon/hint/show-hint';
 let onetimeBullshit = false;
 
 CodeMirror.commands.autocomplete = function(cm) {
@@ -39,6 +39,7 @@ export class EditorDirective implements OnInit {
         const tabId = parseInt(routeParams.get('tab'), 10);
         console.log('tabId', tabId, '=>', tabService.get(tabId));
         this.current = tabService.get(tabId);
+        this.editor = CodeMirror.fromTextArea(element.nativeElement, this.editorOptions());
         // need the service injected, even if this should be static
         if (!onetimeBullshit) {
             onetimeBullshit = true;
@@ -69,7 +70,7 @@ export class EditorDirective implements OnInit {
             });
             CodeMirror.hint.ajax.async = true;
         }
-        this.editor = CodeMirror.fromTextArea(element.nativeElement, this.editorOptions());
+        
         this.editor._tab = this.current;
         const contents = editorService.get(this.current);
         this.editor.setValue(contents);
