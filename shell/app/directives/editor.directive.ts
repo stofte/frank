@@ -7,14 +7,11 @@ import { OmnisharpService } from '../services/omnisharp.service';
 import { AutocompletionQuery } from '../models/autocompletion-query';
 import { AutocompletionResult } from '../models/autocompletion-result';
 import { Tab } from '../models/tab';
-
-
 import * as CodeMirror from 'codemirror';
 import 'codemirror/addon/hint/show-hint';
 let onetimeBullshit = false;
-
 CodeMirror.commands.autocomplete = function(cm) {
-    cm.showHint({ hint: CodeMirror.hint.ajax });
+    cm.showHint({ hint: cm.hint.ajax });
 };
 
 var mac = CodeMirror.keyMap.default == CodeMirror.keyMap.macDefault;
